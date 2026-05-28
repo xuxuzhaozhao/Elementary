@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>历史故事 🌈</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --c1: #FF6B6B; --c2: #FFD93D; --c3: #6BCB77; --c4: #4D96FF;
+    --c5: #FF922B; --c6: #CC5DE8; --c7: #20C997; --c8: #F06595;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #fff9f0 0%, #fff0f6 50%, #f0f9ff 100%);
+    min-height: 100vh;
+    padding: 10px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background:
+      radial-gradient(circle at 10% 15%, rgba(255,107,107,.12) 0%, transparent 35%),
+      radial-gradient(circle at 90% 10%, rgba(77,150,255,.12) 0%, transparent 35%),
+      radial-gradient(circle at 80% 85%, rgba(107,203,119,.12) 0%, transparent 35%),
+      radial-gradient(circle at 15% 80%, rgba(255,217,61,.15) 0%, transparent 35%);
+  }
+
+  .page {
+    position: relative; z-index: 1;
+    max-width: 740px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 24px;
+    padding: 28px 32px 24px;
+    box-shadow:
+      0 0 0 6px #fff,
+      0 0 0 10px var(--c5),
+      0 8px 40px rgba(0,0,0,.10);
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 18px;
+    position: relative;
+  }
+
+  .stars-row {
+    font-size: 22px;
+    letter-spacing: 4px;
+    margin-bottom: 4px;
+    animation: twinkle 2s infinite alternate;
+  }
+  @keyframes twinkle { from{opacity:.7} to{opacity:1} }
+
+  .title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 32px;
+    background: linear-gradient(90deg, var(--c1), var(--c5), var(--c2), var(--c3), var(--c4), var(--c6));
+    background-size: 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: rainbow 4s linear infinite;
+    line-height: 1.2;
+  }
+  @keyframes rainbow { 0%{background-position:0%} 100%{background-position:200%} }
+
+  .subtitle {
+    font-size: 13px;
+    color: #888;
+    margin-top: 4px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0 18px;
+    gap: 10px;
+  }
+
+  .info-box {
+    flex: 1;
+    border-radius: 12px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .info-box.name  { background: linear-gradient(135deg, var(--c1), var(--c5)); }
+  .info-box.date  { background: linear-gradient(135deg, var(--c4), var(--c6)); }
+  .info-box.score { background: linear-gradient(135deg, var(--c3), var(--c7)); }
+
+  .info-box span { font-size: 16px; }
+
+  .info-line {
+    flex: 1;
+    border-bottom: 2px dotted rgba(255,255,255,.7);
+    min-width: 60px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px 12px;
+  }
+
+  .card {
+    border-radius: 16px;
+    padding: 12px 10px 10px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 3px solid transparent;
+    transition: transform .2s;
+  }
+  .card:hover { transform: scale(1.04); }
+
+  .card:nth-child(8n+1)  { background: #FFF3F3; border-color: var(--c1); }
+  .card:nth-child(8n+2)  { background: #FFFBEA; border-color: var(--c2); }
+  .card:nth-child(8n+3)  { background: #F3FFF5; border-color: var(--c3); }
+  .card:nth-child(8n+4)  { background: #F0F5FF; border-color: var(--c4); }
+  .card:nth-child(8n+5)  { background: #FFF5EE; border-color: var(--c5); }
+  .card:nth-child(8n+6)  { background: #FCF0FF; border-color: var(--c6); }
+  .card:nth-child(8n+7)  { background: #EDFFF8; border-color: var(--c7); }
+  .card:nth-child(8n+0)  { background: #FFF0F5; border-color: var(--c8); }
+
+  .num-badge {
+    position: absolute; top: 6px; left: 8px;
+    font-size: 10px; font-weight: 900;
+    color: white;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card:nth-child(8n+1) .num-badge { background: var(--c1); }
+  .card:nth-child(8n+2) .num-badge { background: var(--c2); color:#333; }
+  .card:nth-child(8n+3) .num-badge { background: var(--c3); }
+  .card:nth-child(8n+4) .num-badge { background: var(--c4); }
+  .card:nth-child(8n+5) .num-badge { background: var(--c5); }
+  .card:nth-child(8n+6) .num-badge { background: var(--c6); }
+  .card:nth-child(8n+7) .num-badge { background: var(--c7); }
+  .card:nth-child(8n+0) .num-badge { background: var(--c8); }
+
+  .story-icon {
+    font-size: 32px;
+    margin-bottom: 6px;
+    line-height: 1;
+  }
+
+  .story-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 4px;
+  }
+
+  .dynasty {
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 4px;
+  }
+
+  .description {
+    font-size: 11px;
+    color: #666;
+    line-height: 1.3;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 18px;
+    letter-spacing: 6px;
+  }
+
+  .footer-msg {
+    font-family: 'Fredoka One', cursive;
+    font-size: 14px;
+    margin-top: 6px;
+    background: linear-gradient(90deg, var(--c1), var(--c5), var(--c3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    body::before { display: none; }
+    .page {
+      box-shadow: none;
+      border-radius: 0;
+      max-width: 100%;
+      padding: 18px 20px;
+    }
+    .card:hover { transform: none; }
+    .title { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .card  { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .info-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .num-badge { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    @page { size: A4; margin: 10mm 12mm; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="stars-row">📜🏺⚱️🦕🏛️👑🎭🌟</div>
+    <div class="title">📜 探索历史长河 📜</div>
+    <div class="subtitle" id="subtitle">了解古今中外的有趣故事</div>
+  </div>
+
+  <div class="info-row">
+    <div class="info-box name">
+      <span>😊</span> 姓名：<div class="info-line"></div>
+    </div>
+    <div class="info-box date">
+      <span>📅</span> 日期：<div class="info-line"></div>
+    </div>
+    <div class="info-box score">
+      <span>🏅</span> 得分：<div class="info-line"></div>
+    </div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="footer">历史小达人</div>
+  <div class="footer-msg">读史使人明智！📚✨</div>
+</div>
+
+<script>
+const storyData = [
+  { icon: '🐉', title: '大禹治水', dynasty: '夏朝', desc: '三过家门而不入' },
+  { icon: '⚔️', title: '武王伐纣', dynasty: '商末周初', desc: '牧野之战灭商朝' },
+  { icon: '📜', title: '春秋五霸', dynasty: '春秋时期', desc: '齐桓晋文秦穆楚庄' },
+  { icon: '🗡️', title: '战国七雄', dynasty: '战国时期', desc: '秦楚燕韩赵魏齐' },
+  { icon: '👑', title: '秦始皇统一', dynasty: '秦朝', desc: '统一六国文字货币' },
+  { icon: '🏯', title: '长城修建', dynasty: '秦朝', desc: '万里长城起始修建' },
+  { icon: '📖', title: '汉武大帝', dynasty: '西汉', desc: '独尊儒术击匈奴' },
+  { icon: '🐎', title: '丝绸之路', dynasty: '西汉', desc: '张骞出使西域' },
+  { icon: '🏛️', title: '三国鼎立', dynasty: '东汉末', desc: '魏蜀吴三国争霸' },
+  { icon: '🌸', title: '贞观之治', dynasty: '唐朝', desc: '唐太宗开创盛世' },
+  { icon: '🎎', title: '文成公主', dynasty: '唐朝', desc: '入藏和亲促团结' },
+  { icon: '🚀', title: '郑和下西洋', dynasty: '明朝', desc: '七下西洋远航行' },
+  { icon: '🏰', title: '故宫建成', dynasty: '明朝', desc: '紫禁城辉煌壮观' },
+  { icon: '👘', title: '康乾盛世', dynasty: '清朝', desc: '中国最后一个盛世' },
+  { icon: '🦕', title: '恐龙时代', dynasty: '远古时期', desc: '侏罗纪恐龙称霸' },
+  { icon: '🏺', title: '仰韶文化', dynasty: '新石器时代', desc: '彩陶文化代表' },
+  { icon: '⚱️', title: '青铜器时代', dynasty: '商朝', desc: '后母戊鼎出名' },
+  { icon: '🎭', title: '孔子的故事', dynasty: '春秋时期', desc: '万世师表教育家' },
+  { icon: '🌊', title: '赤壁之战', dynasty: '三国时期', desc: '孙刘联军破曹操' },
+  { icon: '🏔️', title: '玄奘取经', dynasty: '唐朝', desc: '西行求法十七年' },
+  { icon: '🎨', title: '清明上河图', dynasty: '北宋', desc: '张择端传世名画' },
+  { icon: '🧪', title: '造纸术发明', dynasty: '东汉', desc: '蔡伦改进造纸术' },
+  { icon: '🔥', title: '火药发明', dynasty: '唐朝', desc: '炼丹术意外发现' },
+  { icon: '🧭', title: '指南针发明', dynasty: '北宋', desc: '航海必备导航器' },
+  { icon: '📚', title: '活字印刷', dynasty: '北宋', desc: '毕昇发明活字印刷' },
+  { icon: '👑', title: '成吉思汗', dynasty: '元朝', desc: '建立庞大蒙古帝国' },
+  { icon: '🏡', title: '圆明园', dynasty: '清朝', desc: '万园之园瑰宝' },
+  { icon: '🎪', title: '四大发明', dynasty: '中国古代', desc: '造纸印刷火药指南' }
+];
+
+function shuffle(array) {
+  return array.slice().sort(() => Math.random() - 0.5);
+}
+
+function createGrid() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  const shuffled = shuffle(storyData).slice(0, 28);
+
+  shuffled.forEach((item, index) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="num-badge">${index + 1}</div>
+      <div class="story-icon">${item.icon}</div>
+      <div class="story-title">${item.title}</div>
+      <div class="dynasty">${item.dynasty}</div>
+      <div class="description">${item.desc}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+createGrid();
+</script>
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>科学探索 🌈</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --c1: #FF6B6B; --c2: #FFD93D; --c3: #6BCB77; --c4: #4D96FF;
+    --c5: #FF922B; --c6: #CC5DE8; --c7: #20C997; --c8: #F06595;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #fff9f0 0%, #fff0f6 50%, #f0f9ff 100%);
+    min-height: 100vh;
+    padding: 10px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background:
+      radial-gradient(circle at 10% 15%, rgba(255,107,107,.12) 0%, transparent 35%),
+      radial-gradient(circle at 90% 10%, rgba(77,150,255,.12) 0%, transparent 35%),
+      radial-gradient(circle at 80% 85%, rgba(107,203,119,.12) 0%, transparent 35%),
+      radial-gradient(circle at 15% 80%, rgba(255,217,61,.15) 0%, transparent 35%);
+  }
+
+  .page {
+    position: relative; z-index: 1;
+    max-width: 740px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 24px;
+    padding: 28px 32px 24px;
+    box-shadow:
+      0 0 0 6px #fff,
+      0 0 0 10px var(--c7),
+      0 8px 40px rgba(0,0,0,.10);
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 18px;
+    position: relative;
+  }
+
+  .stars-row {
+    font-size: 22px;
+    letter-spacing: 4px;
+    margin-bottom: 4px;
+    animation: twinkle 2s infinite alternate;
+  }
+  @keyframes twinkle { from{opacity:.7} to{opacity:1} }
+
+  .title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 32px;
+    background: linear-gradient(90deg, var(--c1), var(--c5), var(--c2), var(--c3), var(--c4), var(--c6));
+    background-size: 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: rainbow 4s linear infinite;
+    line-height: 1.2;
+  }
+  @keyframes rainbow { 0%{background-position:0%} 100%{background-position:200%} }
+
+  .subtitle {
+    font-size: 13px;
+    color: #888;
+    margin-top: 4px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0 18px;
+    gap: 10px;
+  }
+
+  .info-box {
+    flex: 1;
+    border-radius: 12px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .info-box.name  { background: linear-gradient(135deg, var(--c1), var(--c5)); }
+  .info-box.date  { background: linear-gradient(135deg, var(--c4), var(--c6)); }
+  .info-box.score { background: linear-gradient(135deg, var(--c3), var(--c7)); }
+
+  .info-box span { font-size: 16px; }
+
+  .info-line {
+    flex: 1;
+    border-bottom: 2px dotted rgba(255,255,255,.7);
+    min-width: 60px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px 12px;
+  }
+
+  .card {
+    border-radius: 16px;
+    padding: 12px 10px 10px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 3px solid transparent;
+    transition: transform .2s;
+  }
+  .card:hover { transform: scale(1.04); }
+
+  .card:nth-child(8n+1)  { background: #FFF3F3; border-color: var(--c1); }
+  .card:nth-child(8n+2)  { background: #FFFBEA; border-color: var(--c2); }
+  .card:nth-child(8n+3)  { background: #F3FFF5; border-color: var(--c3); }
+  .card:nth-child(8n+4)  { background: #F0F5FF; border-color: var(--c4); }
+  .card:nth-child(8n+5)  { background: #FFF5EE; border-color: var(--c5); }
+  .card:nth-child(8n+6)  { background: #FCF0FF; border-color: var(--c6); }
+  .card:nth-child(8n+7)  { background: #EDFFF8; border-color: var(--c7); }
+  .card:nth-child(8n+0)  { background: #FFF0F5; border-color: var(--c8); }
+
+  .num-badge {
+    position: absolute; top: 6px; left: 8px;
+    font-size: 10px; font-weight: 900;
+    color: white;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card:nth-child(8n+1) .num-badge { background: var(--c1); }
+  .card:nth-child(8n+2) .num-badge { background: var(--c2); color:#333; }
+  .card:nth-child(8n+3) .num-badge { background: var(--c3); }
+  .card:nth-child(8n+4) .num-badge { background: var(--c4); }
+  .card:nth-child(8n+5) .num-badge { background: var(--c5); }
+  .card:nth-child(8n+6) .num-badge { background: var(--c6); }
+  .card:nth-child(8n+7) .num-badge { background: var(--c7); }
+  .card:nth-child(8n+0) .num-badge { background: var(--c8); }
+
+  .science-icon {
+    font-size: 32px;
+    margin-bottom: 6px;
+    line-height: 1;
+  }
+
+  .science-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 4px;
+  }
+
+  .category {
+    font-size: 10px;
+    color: #888;
+    margin-bottom: 4px;
+    background: rgba(0,0,0,.05);
+    padding: 2px 6px;
+    border-radius: 8px;
+    display: inline-block;
+  }
+
+  .description {
+    font-size: 11px;
+    color: #666;
+    line-height: 1.3;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 18px;
+    letter-spacing: 6px;
+  }
+
+  .footer-msg {
+    font-family: 'Fredoka One', cursive;
+    font-size: 14px;
+    margin-top: 6px;
+    background: linear-gradient(90deg, var(--c3), var(--c7), var(--c4));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    body::before { display: none; }
+    .page {
+      box-shadow: none;
+      border-radius: 0;
+      max-width: 100%;
+      padding: 18px 20px;
+    }
+    .card:hover { transform: none; }
+    .title { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .card  { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .info-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .num-badge { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    @page { size: A4; margin: 10mm 12mm; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="stars-row">🔬🧪🌍🚀💡🔭🧬⚡</div>
+    <div class="title">🔬 神奇科学世界 🔬</div>
+    <div class="subtitle" id="subtitle">探索自然奥秘，发现科学乐趣</div>
+  </div>
+
+  <div class="info-row">
+    <div class="info-box name">
+      <span>😊</span> 姓名：<div class="info-line"></div>
+    </div>
+    <div class="info-box date">
+      <span>📅</span> 日期：<div class="info-line"></div>
+    </div>
+    <div class="info-box score">
+      <span>🏅</span> 得分：<div class="info-line"></div>
+    </div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="footer">未来科学家</div>
+  <div class="footer-msg">探索未知，创造未来！🚀✨</div>
+</div>
+
+<script>
+const scienceData = [
+  { icon: '🌍', title: '地球结构', category: '地理', desc: '地壳地幔地核三层' },
+  { icon: '🌙', title: '月相变化', category: '天文', desc: '新月满月上弦下弦' },
+  { icon: '☀️', title: '太阳系', category: '天文', desc: '八大行星围绕太阳' },
+  { icon: '⭐', title: '星星分类', category: '天文', desc: '恒星行星卫星区别' },
+  { icon: '🌧️', title: '水循环', category: '自然', desc: '蒸发凝结降水循环' },
+  { icon: '🌈', title: '彩虹形成', category: '光学', desc: '阳光折射七色光' },
+  { icon: '❄️', title: '雪的成因', category: '气象', desc: '水蒸气凝华结晶' },
+  { icon: '🌋', title: '火山喷发', category: '地理', desc: '岩浆从地底涌出' },
+  { icon: '🦕', title: '恐龙灭绝', category: '生物', desc: '小行星撞击地球' },
+  { icon: '🧬', title: 'DNA双螺旋', category: '生物', desc: '遗传信息的载体' },
+  { icon: '🌱', title: '光合作用', category: '植物', desc: '植物制造食物过程' },
+  { icon: '🐸', title: '青蛙变态', category: '动物', desc: '蝌蚪变青蛙过程' },
+  { icon: '🦋', title: '蝴蝶蜕变', category: '动物', desc: '毛毛虫变蝴蝶' },
+  { icon: '🔋', title: '电流产生', category: '物理', desc: '电子定向移动形成' },
+  { icon: '⚡', title: '雷电现象', category: '物理', desc: '云层放电产生' },
+  { icon: '🧲', title: '磁铁性质', category: '物理', desc: '同极相斥异极相吸' },
+  { icon: '🔍', title: '放大镜原理', category: '光学', desc: '凸透镜放大成像' },
+  { icon: '🎈', title: '热气球升空', category: '物理', desc: '热空气比冷空气轻' },
+  { icon: '🧪', title: '酸碱指示', category: '化学', desc: '紫色石蕊变红变蓝' },
+  { icon: '🫧', title: '泡泡原理', category: '物理', desc: '表面张力作用' },
+  { icon: '🌊', title: '海浪形成', category: '地理', desc: '风力吹动水面' },
+  { icon: '⏰', title: '四季形成', category: '天文', desc: '地球倾斜绕太阳转' },
+  { icon: '👨‍🚀', title: '宇航员生活', category: '航天', desc: '太空中的有趣经历' },
+  { icon: '🤖', title: '机器人原理', category: '科技', desc: '程序控制自动运行' },
+  { icon: '💻', title: '电脑工作', category: '科技', desc: '二进制计算原理' },
+  { icon: '📱', title: '手机通讯', category: '科技', desc: '电磁波传递信息' },
+  { icon: '🔑', title: '密码学', category: '科技', desc: '信息加密与解密' },
+  { icon: '🩺', title: '听诊器原理', category: '医学', desc: '声音放大传递' }
+];
+
+function shuffle(array) {
+  return array.slice().sort(() => Math.random() - 0.5);
+}
+
+function createGrid() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  const shuffled = shuffle(scienceData).slice(0, 28);
+
+  shuffled.forEach((item, index) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="num-badge">${index + 1}</div>
+      <div class="science-icon">${item.icon}</div>
+      <div class="science-title">${item.title}</div>
+      <div class="category">${item.category}</div>
+      <div class="description">${item.desc}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+createGrid();
+</script>
+</body>
+</html>

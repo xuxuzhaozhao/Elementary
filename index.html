@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -33,11 +32,11 @@
 
   .page {
     position: relative; z-index: 1;
-    max-width: 500px;
+    max-width: 700px;
     margin: 0 auto;
     background: white;
     border-radius: 24px;
-    padding: 32px;
+    padding: 28px 24px;
     box-shadow:
       0 0 0 6px #fff,
       0 0 0 10px var(--c4),
@@ -46,21 +45,21 @@
 
   .header {
     text-align: center;
-    margin-bottom: 28px;
+    margin-bottom: 22px;
     position: relative;
   }
 
   .stars-row {
-    font-size: 26px;
-    letter-spacing: 6px;
-    margin-bottom: 8px;
+    font-size: 22px;
+    letter-spacing: 5px;
+    margin-bottom: 6px;
     animation: twinkle 2s infinite alternate;
   }
   @keyframes twinkle { from{opacity:.7} to{opacity:1} }
 
   .title {
     font-family: 'Fredoka One', cursive;
-    font-size: 36px;
+    font-size: 30px;
     background: linear-gradient(90deg, var(--c1), var(--c5), var(--c2), var(--c3), var(--c4), var(--c6));
     background-size: 200%;
     -webkit-background-clip: text;
@@ -72,34 +71,36 @@
   @keyframes rainbow { 0%{background-position:0%} 100%{background-position:200%} }
 
   .subtitle {
-    font-size: 14px;
+    font-size: 13px;
     color: #888;
-    margin-top: 8px;
+    margin-top: 6px;
     font-weight: 700;
     letter-spacing: 1px;
   }
 
   .choices {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
   }
 
   .choice-card {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-decoration: none;
-    border-radius: 20px;
-    padding: 24px;
+    border-radius: 16px;
+    padding: 16px 12px;
     text-align: center;
     position: relative;
     overflow: hidden;
-    border: 4px solid transparent;
-    transition: transform .25s, box-shadow .25s;
+    border: 3px solid transparent;
+    transition: transform .2s, box-shadow .2s;
   }
 
   .choice-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 30px rgba(0,0,0,.15);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,.12);
   }
 
   .choice-card.math {
@@ -113,68 +114,67 @@
   }
 
   .choice-card.english {
-    background: linear-gradient(135deg, #F3FFF5 0%, #E6F7FF 100%);
+    background: linear-gradient(135deg, #F3F5FF 0%, #E6F7FF 100%);
     border-color: var(--c4);
   }
 
+  .choice-card.history {
+    background: linear-gradient(135deg, #FFF5E6 0%, #FFF0F5 100%);
+    border-color: var(--c5);
+  }
+
+  .choice-card.science {
+    background: linear-gradient(135deg, #F0FFF4 0%, #E6FFFA 100%);
+    border-color: var(--c7);
+  }
+
   .choice-emoji {
-    font-size: 52px;
+    font-size: 36px;
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
     animation: bounce 2s ease-in-out infinite;
   }
 
   @keyframes bounce {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
+    50% { transform: translateY(-5px); }
   }
 
   .choice-card.math .choice-emoji { animation-delay: 0s; }
-  .choice-card.chinese .choice-emoji { animation-delay: 0.3s; }
-  .choice-card.english .choice-emoji { animation-delay: 0.6s; }
+  .choice-card.chinese .choice-emoji { animation-delay: 0.2s; }
+  .choice-card.english .choice-emoji { animation-delay: 0.4s; }
+  .choice-card.history .choice-emoji { animation-delay: 0.6s; }
+  .choice-card.science .choice-emoji { animation-delay: 0.8s; }
 
   .choice-title {
     font-family: 'Fredoka One', cursive;
-    font-size: 28px;
+    font-size: 16px;
     color: #333;
-    margin-bottom: 6px;
+    margin-bottom: 3px;
   }
 
   .choice-desc {
-    font-size: 14px;
+    font-size: 11px;
     color: #666;
     font-weight: 600;
+    line-height: 1.3;
   }
 
   .footer {
     text-align: center;
-    margin-top: 24px;
-    font-size: 20px;
-    letter-spacing: 8px;
+    margin-top: 20px;
+    font-size: 18px;
+    letter-spacing: 6px;
   }
 
   .footer-msg {
     font-family: 'Fredoka One', cursive;
-    font-size: 15px;
-    margin-top: 8px;
+    font-size: 13px;
+    margin-top: 6px;
     background: linear-gradient(90deg, var(--c1), var(--c4), var(--c3));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-  }
-
-  .sparkles {
-    position: absolute;
-    font-size: 16px;
-    opacity: 0.6;
-  }
-
-  .choice-card.math .sparkles {
-    top: 12px; right: 16px;
-  }
-
-  .choice-card.chinese .sparkles {
-    top: 12px; right: 16px;
   }
 </style>
 </head>
@@ -189,24 +189,33 @@
 
   <div class="choices">
     <a href="shuxue.html" class="choice-card math">
-      <span class="sparkles">✨</span>
       <span class="choice-emoji">🧮</span>
       <div class="choice-title">数学练习</div>
-      <div class="choice-desc">加减乘除 · 快乐学习</div>
+      <div class="choice-desc">加减乘除<br>快乐学习</div>
     </a>
 
     <a href="yuwen.html" class="choice-card chinese">
-      <span class="sparkles">📖</span>
       <span class="choice-emoji">📝</span>
       <div class="choice-title">语文练习</div>
-      <div class="choice-desc">汉字书写 · 诗词背诵</div>
+      <div class="choice-desc">拼音汉字<br>诗词背诵</div>
     </a>
 
     <a href="yingyu.html" class="choice-card english">
-      <span class="sparkles">🌟</span>
       <span class="choice-emoji">🔤</span>
       <div class="choice-title">英语练习</div>
-      <div class="choice-desc">ABC单词 · 轻松学习</div>
+      <div class="choice-desc">ABC单词<br>轻松学习</div>
+    </a>
+
+    <a href="lishi.html" class="choice-card history">
+      <span class="choice-emoji">📜</span>
+      <div class="choice-title">历史故事</div>
+      <div class="choice-desc">古今中外<br>趣味历史</div>
+    </a>
+
+    <a href="kexue.html" class="choice-card science">
+      <span class="choice-emoji">�</span>
+      <div class="choice-title">科学探索</div>
+      <div class="choice-desc">自然奥秘<br>科学实验</div>
     </a>
   </div>
 
@@ -214,208 +223,4 @@
   <div class="footer-msg">今天也要好好学习哦！加油！💪🎊</div>
 </div>
 </body>
-=======
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>学习乐园 🌈</title>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --c1: #FF6B6B; --c2: #FFD93D; --c3: #6BCB77; --c4: #4D96FF;
-    --c5: #FF922B; --c6: #CC5DE8; --c7: #20C997; --c8: #F06595;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Nunito', sans-serif;
-    background: linear-gradient(135deg, #fff9f0 0%, #fff0f6 50%, #f0f9ff 100%);
-    min-height: 100vh;
-    padding: 10px;
-  }
-
-  body::before {
-    content: '';
-    position: fixed; inset: 0; pointer-events: none; z-index: 0;
-    background:
-      radial-gradient(circle at 10% 15%, rgba(255,107,107,.12) 0%, transparent 35%),
-      radial-gradient(circle at 90% 10%, rgba(77,150,255,.12) 0%, transparent 35%),
-      radial-gradient(circle at 80% 85%, rgba(107,203,119,.12) 0%, transparent 35%),
-      radial-gradient(circle at 15% 80%, rgba(255,217,61,.15) 0%, transparent 35%);
-  }
-
-  .page {
-    position: relative; z-index: 1;
-    max-width: 500px;
-    margin: 0 auto;
-    background: white;
-    border-radius: 24px;
-    padding: 32px;
-    box-shadow:
-      0 0 0 6px #fff,
-      0 0 0 10px var(--c4),
-      0 8px 40px rgba(0,0,0,.10);
-  }
-
-  .header {
-    text-align: center;
-    margin-bottom: 28px;
-    position: relative;
-  }
-
-  .stars-row {
-    font-size: 26px;
-    letter-spacing: 6px;
-    margin-bottom: 8px;
-    animation: twinkle 2s infinite alternate;
-  }
-  @keyframes twinkle { from{opacity:.7} to{opacity:1} }
-
-  .title {
-    font-family: 'Fredoka One', cursive;
-    font-size: 36px;
-    background: linear-gradient(90deg, var(--c1), var(--c5), var(--c2), var(--c3), var(--c4), var(--c6));
-    background-size: 200%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: rainbow 4s linear infinite;
-    line-height: 1.2;
-  }
-  @keyframes rainbow { 0%{background-position:0%} 100%{background-position:200%} }
-
-  .subtitle {
-    font-size: 14px;
-    color: #888;
-    margin-top: 8px;
-    font-weight: 700;
-    letter-spacing: 1px;
-  }
-
-  .choices {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .choice-card {
-    display: block;
-    text-decoration: none;
-    border-radius: 20px;
-    padding: 24px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    border: 4px solid transparent;
-    transition: transform .25s, box-shadow .25s;
-  }
-
-  .choice-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 30px rgba(0,0,0,.15);
-  }
-
-  .choice-card.math {
-    background: linear-gradient(135deg, #FFF3F3 0%, #F0F5FF 100%);
-    border-color: var(--c1);
-  }
-
-  .choice-card.chinese {
-    background: linear-gradient(135deg, #FFFBEA 0%, #EDFFF8 100%);
-    border-color: var(--c3);
-  }
-
-  .choice-emoji {
-    font-size: 52px;
-    display: block;
-    margin-bottom: 10px;
-    animation: bounce 2s ease-in-out infinite;
-  }
-
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-  }
-
-  .choice-card.math .choice-emoji { animation-delay: 0s; }
-  .choice-card.chinese .choice-emoji { animation-delay: 0.5s; }
-
-  .choice-title {
-    font-family: 'Fredoka One', cursive;
-    font-size: 28px;
-    color: #333;
-    margin-bottom: 6px;
-  }
-
-  .choice-desc {
-    font-size: 14px;
-    color: #666;
-    font-weight: 600;
-  }
-
-  .footer {
-    text-align: center;
-    margin-top: 24px;
-    font-size: 20px;
-    letter-spacing: 8px;
-  }
-
-  .footer-msg {
-    font-family: 'Fredoka One', cursive;
-    font-size: 15px;
-    margin-top: 8px;
-    background: linear-gradient(90deg, var(--c1), var(--c4), var(--c3));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .sparkles {
-    position: absolute;
-    font-size: 16px;
-    opacity: 0.6;
-  }
-
-  .choice-card.math .sparkles {
-    top: 12px; right: 16px;
-  }
-
-  .choice-card.chinese .sparkles {
-    top: 12px; right: 16px;
-  }
-</style>
-</head>
-<body>
-<div class="page">
-
-  <div class="header">
-    <div class="stars-row">⭐🌙✨🌈🎉🦋🌸🎈</div>
-    <div class="title">🎒 徐欣和的学习乐园 🎒</div>
-    <div class="subtitle">选择你想学习的科目</div>
-  </div>
-
-  <div class="choices">
-    <a href="shuxue.html" class="choice-card math">
-      <span class="sparkles">✨</span>
-      <span class="choice-emoji">🧮</span>
-      <div class="choice-title">数学练习</div>
-      <div class="choice-desc">加减乘除 · 快乐学习</div>
-    </a>
-
-    <a href="yuwen.html" class="choice-card chinese">
-      <span class="sparkles">📖</span>
-      <span class="choice-emoji">📝</span>
-      <div class="choice-title">语文练习</div>
-      <div class="choice-desc">汉字书写 · 诗词背诵</div>
-    </a>
-  </div>
-
-  <div class="footer">🌟🌟🌟🌟🌟</div>
-  <div class="footer-msg">今天也要好好学习哦！加油！💪🎊</div>
-</div>
-</body>
->>>>>>> b4c42d332839318212337f07342b226d8ac705bb
 </html>
