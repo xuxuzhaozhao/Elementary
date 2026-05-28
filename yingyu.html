@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英语练习题 🌈</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --c1: #FF6B6B; --c2: #FFD93D; --c3: #6BCB77; --c4: #4D96FF;
+    --c5: #FF922B; --c6: #CC5DE8; --c7: #20C997; --c8: #F06595;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #fff9f0 0%, #fff0f6 50%, #f0f9ff 100%);
+    min-height: 100vh;
+    padding: 10px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background:
+      radial-gradient(circle at 10% 15%, rgba(255,107,107,.12) 0%, transparent 35%),
+      radial-gradient(circle at 90% 10%, rgba(77,150,255,.12) 0%, transparent 35%),
+      radial-gradient(circle at 80% 85%, rgba(107,203,119,.12) 0%, transparent 35%),
+      radial-gradient(circle at 15% 80%, rgba(255,217,61,.15) 0%, transparent 35%);
+  }
+
+  .page {
+    position: relative; z-index: 1;
+    max-width: 740px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 24px;
+    padding: 28px 32px 24px;
+    box-shadow:
+      0 0 0 6px #fff,
+      0 0 0 10px var(--c4),
+      0 8px 40px rgba(0,0,0,.10);
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 18px;
+    position: relative;
+  }
+
+  .stars-row {
+    font-size: 22px;
+    letter-spacing: 4px;
+    margin-bottom: 4px;
+    animation: twinkle 2s infinite alternate;
+  }
+  @keyframes twinkle { from{opacity:.7} to{opacity:1} }
+
+  .title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 32px;
+    background: linear-gradient(90deg, var(--c1), var(--c5), var(--c2), var(--c3), var(--c4), var(--c6));
+    background-size: 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: rainbow 4s linear infinite;
+    line-height: 1.2;
+  }
+  @keyframes rainbow { 0%{background-position:0%} 100%{background-position:200%} }
+
+  .subtitle {
+    font-size: 13px;
+    color: #888;
+    margin-top: 4px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0 18px;
+    gap: 10px;
+  }
+
+  .info-box {
+    flex: 1;
+    border-radius: 12px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .info-box.name  { background: linear-gradient(135deg, var(--c1), var(--c5)); }
+  .info-box.date  { background: linear-gradient(135deg, var(--c4), var(--c6)); }
+  .info-box.score { background: linear-gradient(135deg, var(--c3), var(--c7)); }
+
+  .info-box span { font-size: 16px; }
+
+  .info-line {
+    flex: 1;
+    border-bottom: 2px dotted rgba(255,255,255,.7);
+    min-width: 60px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px 12px;
+  }
+
+  .card {
+    border-radius: 16px;
+    padding: 12px 10px 10px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 3px solid transparent;
+    transition: transform .2s;
+  }
+  .card:hover { transform: scale(1.04); }
+
+  .card:nth-child(8n+1)  { background: #FFF3F3; border-color: var(--c1); }
+  .card:nth-child(8n+2)  { background: #FFFBEA; border-color: var(--c2); }
+  .card:nth-child(8n+3)  { background: #F3FFF5; border-color: var(--c3); }
+  .card:nth-child(8n+4)  { background: #F0F5FF; border-color: var(--c4); }
+  .card:nth-child(8n+5)  { background: #FFF5EE; border-color: var(--c5); }
+  .card:nth-child(8n+6)  { background: #FCF0FF; border-color: var(--c6); }
+  .card:nth-child(8n+7)  { background: #EDFFF8; border-color: var(--c7); }
+  .card:nth-child(8n+0)  { background: #FFF0F5; border-color: var(--c8); }
+
+  .num-badge {
+    position: absolute; top: 6px; left: 8px;
+    font-size: 10px; font-weight: 900;
+    color: white;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card:nth-child(8n+1) .num-badge { background: var(--c1); }
+  .card:nth-child(8n+2) .num-badge { background: var(--c2); color:#333; }
+  .card:nth-child(8n+3) .num-badge { background: var(--c3); }
+  .card:nth-child(8n+4) .num-badge { background: var(--c4); }
+  .card:nth-child(8n+5) .num-badge { background: var(--c5); }
+  .card:nth-child(8n+6) .num-badge { background: var(--c6); }
+  .card:nth-child(8n+7) .num-badge { background: var(--c7); }
+  .card:nth-child(8n+0) .num-badge { background: var(--c8); }
+
+  .word-icon {
+    font-size: 32px;
+    margin-bottom: 6px;
+    line-height: 1;
+  }
+
+  .word {
+    font-family: 'Fredoka One', cursive;
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 4px;
+  }
+
+  .translation {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 4px;
+  }
+
+  .example {
+    font-size: 11px;
+    color: #888;
+    font-style: italic;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 18px;
+    letter-spacing: 6px;
+  }
+
+  .footer-msg {
+    font-family: 'Fredoka One', cursive;
+    font-size: 14px;
+    margin-top: 6px;
+    background: linear-gradient(90deg, var(--c1), var(--c4), var(--c3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.35);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    z-index: 100;
+  }
+
+  .modal.open { display: flex; }
+
+  .modal-content {
+    width: min(520px, 100%);
+    background: white;
+    border-radius: 22px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.18);
+    overflow: hidden;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 22px;
+    font-size: 18px;
+    font-weight: 800;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .close-btn {
+    border: none;
+    background: transparent;
+    font-size: 22px;
+    cursor: pointer;
+    color: #666;
+  }
+
+  .modal-body {
+    display: grid;
+    gap: 14px;
+    padding: 20px 22px;
+  }
+
+  .field {
+    display: grid;
+    gap: 6px;
+    font-size: 14px;
+  }
+
+  .field label {
+    font-weight: 700;
+  }
+
+  .field select {
+    width: 100%;
+    border-radius: 999px;
+    border: 1px solid #ddd;
+    padding: 10px 14px;
+    font-size: 14px;
+    outline: none;
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 22px 22px;
+    background: #f9fbff;
+  }
+
+  .modal-actions button {
+    border: none;
+    border-radius: 999px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  #cancelConfig {
+    background: #f0f0f5;
+    color: #575767;
+  }
+
+  #applyConfig {
+    background: linear-gradient(135deg, var(--c3), var(--c7));
+    color: white;
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    body::before { display: none; }
+    .page {
+      box-shadow: none;
+      border-radius: 0;
+      max-width: 100%;
+      padding: 18px 20px;
+    }
+    .card:hover { transform: none; }
+    .title { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .card  { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .info-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .num-badge { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    @page { size: A4; margin: 10mm 12mm; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="stars-row">🌟ABC🎈📚✨🧠💡🎉</div>
+    <div class="title">🔤 英语单词小课堂 🔤</div>
+    <div class="subtitle" id="subtitle">认识常用英语单词，轻松学英语！</div>
+  </div>
+
+  <div class="info-row">
+    <div class="info-box name">
+      <span>😊</span> 姓名：<div class="info-line"></div>
+    </div>
+    <div class="info-box date">
+      <span>📅</span> 日期：<div class="info-line"></div>
+    </div>
+    <div class="info-box score">
+      <span>🏅</span> 得分：<div class="info-line"></div>
+    </div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="footer">ABCDEFG</div>
+  <div class="footer-msg">英语学习，快乐开始！🌟🎊</div>
+</div>
+
+<script>
+const wordData = {
+  fruits: [
+    { word: 'Apple', icon: '🍎', translation: '苹果', example: 'I eat an apple.' },
+    { word: 'Banana', icon: '🍌', translation: '香蕉', example: 'Yellow banana.' },
+    { word: 'Orange', icon: '🍊', translation: '橙子', example: 'Juicy orange.' },
+    { word: 'Grape', icon: '🍇', translation: '葡萄', example: 'Sweet grapes.' },
+    { word: 'Strawberry', icon: '🍓', translation: '草莓', example: 'Red strawberry.' },
+    { word: 'Watermelon', icon: '🍉', translation: '西瓜', example: 'Big watermelon.' },
+    { word: 'Peach', icon: '🍑', translation: '桃子', example: 'Soft peach.' },
+    { word: 'Cherry', icon: '🍒', translation: '樱桃', example: 'Small cherry.' }
+  ],
+  animals: [
+    { word: 'Dog', icon: '🐶', translation: '狗', example: 'Cute dog.' },
+    { word: 'Cat', icon: '🐱', translation: '猫', example: 'Sleepy cat.' },
+    { word: 'Bird', icon: '🐦', translation: '鸟', example: 'Little bird.' },
+    { word: 'Fish', icon: '🐟', translation: '鱼', example: 'Swimming fish.' },
+    { word: 'Rabbit', icon: '🐰', translation: '兔子', example: 'White rabbit.' },
+    { word: 'Bear', icon: '🐻', translation: '熊', example: 'Big bear.' },
+    { word: 'Elephant', icon: '🐘', translation: '大象', example: 'Gray elephant.' },
+    { word: 'Butterfly', icon: '🦋', translation: '蝴蝶', example: 'Colorful butterfly.' }
+  ],
+  family: [
+    { word: 'Father', icon: '👨', translation: '爸爸', example: 'My father.' },
+    { word: 'Mother', icon: '👩', translation: '妈妈', example: 'My mother.' },
+    { word: 'Brother', icon: '👦', translation: '哥哥', example: 'Big brother.' },
+    { word: 'Sister', icon: '👧', translation: '姐姐', example: 'Little sister.' },
+    { word: 'Grandpa', icon: '👴', translation: '爷爷', example: 'Dear grandpa.' },
+    { word: 'Grandma', icon: '👵', translation: '奶奶', example: 'Kind grandma.' },
+    { word: 'Family', icon: '👨‍👩‍👧‍👦', translation: '家庭', example: 'Happy family.' },
+    { word: 'Home', icon: '🏠', translation: '家', example: 'Go home.' }
+  ],
+  numbers: [
+    { word: 'One', icon: '1️⃣', translation: '一', example: 'Number one.' },
+    { word: 'Two', icon: '2️⃣', translation: '二', example: 'Number two.' },
+    { word: 'Three', icon: '3️⃣', translation: '三', example: 'Number three.' },
+    { word: 'Four', icon: '4️⃣', translation: '四', example: 'Number four.' },
+    { word: 'Five', icon: '5️⃣', translation: '五', example: 'Number five.' },
+    { word: 'Six', icon: '6️⃣', translation: '六', example: 'Number six.' },
+    { word: 'Seven', icon: '7️⃣', translation: '七', example: 'Number seven.' },
+    { word: 'Eight', icon: '8️⃣', translation: '八', example: 'Number eight.' }
+  ]
+};
+
+function shuffle(array) {
+  return array.slice().sort(() => Math.random() - 0.5);
+}
+
+function createGrid() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  
+  const allWords = [
+    ...wordData.fruits,
+    ...wordData.animals,
+    ...wordData.family,
+    ...wordData.numbers
+  ];
+  
+  const shuffled = shuffle(allWords).slice(0, 28);
+  
+  shuffled.forEach((item, index) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="num-badge">${index + 1}</div>
+      <div class="word-icon">${item.icon}</div>
+      <div class="word">${item.word}</div>
+      <div class="translation">${item.translation}</div>
+      <div class="example">${item.example}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+createGrid();
+</script>
+</body>
+</html>

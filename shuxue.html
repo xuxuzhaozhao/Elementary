@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数学练习题 🌈</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --c1: #FF6B6B; --c2: #FFD93D; --c3: #6BCB77; --c4: #4D96FF;
+    --c5: #FF922B; --c6: #CC5DE8; --c7: #20C997; --c8: #F06595;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #fff9f0 0%, #fff0f6 50%, #f0f9ff 100%);
+    min-height: 100vh;
+    padding: 10px;
+  }
+
+  /* ---- DECORATIVE BACKGROUND SHAPES ---- */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background:
+      radial-gradient(circle at 10% 15%, rgba(255,107,107,.12) 0%, transparent 35%),
+      radial-gradient(circle at 90% 10%, rgba(77,150,255,.12) 0%, transparent 35%),
+      radial-gradient(circle at 80% 85%, rgba(107,203,119,.12) 0%, transparent 35%),
+      radial-gradient(circle at 15% 80%, rgba(255,217,61,.15) 0%, transparent 35%);
+  }
+
+  .page {
+    position: relative; z-index: 1;
+    max-width: 740px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 24px;
+    padding: 28px 32px 24px;
+    box-shadow:
+      0 0 0 6px #fff,
+      0 0 0 10px var(--c4),
+      0 8px 40px rgba(0,0,0,.10);
+  }
+
+  /* ---- HEADER ---- */
+  .header {
+    text-align: center;
+    margin-bottom: 18px;
+    position: relative;
+  }
+
+  .stars-row {
+    font-size: 22px;
+    letter-spacing: 4px;
+    margin-bottom: 4px;
+    animation: twinkle 2s infinite alternate;
+  }
+  @keyframes twinkle { from{opacity:.7} to{opacity:1} }
+
+  .title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 32px;
+    background: linear-gradient(90deg, var(--c1), var(--c5), var(--c2), var(--c3), var(--c4), var(--c6));
+    background-size: 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: rainbow 4s linear infinite;
+    line-height: 1.2;
+  }
+  @keyframes rainbow { 0%{background-position:0%} 100%{background-position:200%} }
+
+  .subtitle {
+    font-size: 13px;
+    color: #888;
+    margin-top: 4px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  .subtitle-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+    justify-content: center;
+    flex-wrap: nowrap;
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0 18px;
+    gap: 10px;
+  }
+
+  .info-box {
+    flex: 1;
+    border-radius: 12px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .info-box.name  { background: linear-gradient(135deg, var(--c1), var(--c5)); }
+  .info-box.date  { background: linear-gradient(135deg, var(--c4), var(--c6)); }
+  .info-box.score { background: linear-gradient(135deg, var(--c3), var(--c7)); }
+
+  .info-box span { font-size: 16px; }
+
+  .info-line {
+    flex: 1;
+    border-bottom: 2px dotted rgba(255,255,255,.7);
+    min-width: 60px;
+  }
+
+  /* ---- GRID ---- */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px 12px;
+  }
+
+  .card {
+    border-radius: 16px;
+    padding: 12px 10px 10px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 3px solid transparent;
+    transition: transform .2s;
+  }
+  .card:hover { transform: scale(1.04); }
+
+  /* colour cycling */
+  .card:nth-child(8n+1)  { background: #FFF3F3; border-color: var(--c1); }
+  .card:nth-child(8n+2)  { background: #FFFBEA; border-color: var(--c2); }
+  .card:nth-child(8n+3)  { background: #F3FFF5; border-color: var(--c3); }
+  .card:nth-child(8n+4)  { background: #F0F5FF; border-color: var(--c4); }
+  .card:nth-child(8n+5)  { background: #FFF5EE; border-color: var(--c5); }
+  .card:nth-child(8n+6)  { background: #FCF0FF; border-color: var(--c6); }
+  .card:nth-child(8n+7)  { background: #EDFFF8; border-color: var(--c7); }
+  .card:nth-child(8n+0)  { background: #FFF0F5; border-color: var(--c8); }
+
+  .num-badge {
+    position: absolute; top: 6px; left: 8px;
+    font-size: 10px; font-weight: 900;
+    color: white;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card:nth-child(8n+1) .num-badge { background: var(--c1); }
+  .card:nth-child(8n+2) .num-badge { background: var(--c2); color:#333; }
+  .card:nth-child(8n+3) .num-badge { background: var(--c3); }
+  .card:nth-child(8n+4) .num-badge { background: var(--c4); }
+  .card:nth-child(8n+5) .num-badge { background: var(--c5); }
+  .card:nth-child(8n+6) .num-badge { background: var(--c6); }
+  .card:nth-child(8n+7) .num-badge { background: var(--c7); }
+  .card:nth-child(8n+0) .num-badge { background: var(--c8); }
+
+  .emoji {
+    font-size: 20px;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .equation {
+    font-family: 'Fredoka One', cursive;
+    font-size: 22px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    line-height: 1;
+  }
+
+  .eq-op {
+    font-size: 20px;
+    color: #aaa;
+  }
+
+  .eq-eq {
+    font-size: 20px;
+    color: #bbb;
+  }
+
+  .answer-box {
+    display: inline-block;
+    width: 48px; height: 28px;
+    border-bottom: 3px solid #ccc;
+    border-radius: 4px;
+  }
+
+  /* ---- FOOTER ---- */
+  .footer {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 18px;
+    letter-spacing: 6px;
+  }
+
+  .footer-msg {
+    font-family: 'Fredoka One', cursive;
+    font-size: 14px;
+    margin-top: 6px;
+    background: linear-gradient(90deg, var(--c1), var(--c4), var(--c3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .config-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    font-size: 18px;
+    color: white;
+    background: linear-gradient(135deg, var(--c4), var(--c2));
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(77,150,255,.18);
+    padding: 0;
+  }
+
+  .config-btn:hover { transform: translateY(-1px); }
+
+  .modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.35);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    z-index: 100;
+  }
+
+  .modal.open { display: flex; }
+
+  .modal-content {
+    width: min(520px, 100%);
+    background: white;
+    border-radius: 22px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.18);
+    overflow: hidden;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 22px;
+    font-size: 18px;
+    font-weight: 800;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .close-btn {
+    border: none;
+    background: transparent;
+    font-size: 22px;
+    cursor: pointer;
+    color: #666;
+  }
+
+  .modal-body {
+    display: grid;
+    gap: 14px;
+    padding: 20px 22px;
+  }
+
+  .modal-body label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #333;
+  }
+
+  .modal-body input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+  }
+
+  .field {
+    display: grid;
+    gap: 6px;
+    font-size: 14px;
+  }
+
+  .field label {
+    font-weight: 700;
+  }
+
+  .field select {
+    width: 100%;
+    border-radius: 999px;
+    border: 1px solid #ddd;
+    padding: 10px 14px;
+    font-size: 14px;
+    outline: none;
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 22px 22px;
+    background: #f9fbff;
+  }
+
+  .modal-actions button {
+    border: none;
+    border-radius: 999px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  #cancelConfig {
+    background: #f0f0f5;
+    color: #575767;
+  }
+
+  #applyConfig {
+    background: linear-gradient(135deg, var(--c3), var(--c7));
+    color: white;
+  }
+
+  /* ---- PRINT ---- */
+  @media print {
+    body { background: white; padding: 0; }
+    body::before { display: none; }
+    .page {
+      box-shadow: none;
+      border-radius: 0;
+      max-width: 100%;
+      padding: 18px 20px;
+    }
+    .card:hover { transform: none; }
+    .title { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .card  { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .info-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .num-badge { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    @page { size: A4; margin: 10mm 12mm; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="stars-row">⭐🌙✨🌈🎉🦋🌸🎈</div>
+    <div class="title">🧮 徐欣和专属数学练习题 🧮</div>
+    <div class="subtitle-row">
+      <div class="subtitle" id="subtitle">10-99 数字练习 · 仅加法 · 共28题</div>
+      <button class="config-btn" id="openConfig" aria-label="配置">⚙️</button>
+    </div>
+  </div>
+
+  <!-- INFO ROW -->
+  <div class="info-row">
+    <div class="info-box name">
+      <span>😊</span> 姓名：<div class="info-line"></div>
+    </div>
+    <div class="info-box date">
+      <span>📅</span> 日期：<div class="info-line"></div>
+    </div>
+    <div class="info-box score">
+      <span>🏆</span> 得分：<div class="info-line"></div>
+    </div>
+  </div>
+
+  <!-- QUESTIONS GRID -->
+  <div class="grid" id="grid"></div>
+
+  <div id="configModal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>题目配置</div>
+        <button class="close-btn" id="closeConfig">×</button>
+      </div>
+      <div class="modal-body">
+        <label><input type="checkbox" id="carryCheckbox"> 包含进位</label>
+        <label><input type="checkbox" id="subCheckbox"> 包含减法</label>
+        <label><input type="checkbox" id="mulCheckbox"> 包含乘法</label>
+        <label><input type="checkbox" id="divCheckbox"> 包含除法</label>
+        <div class="field">
+          <label for="rangeSelect">数字范围</label>
+          <select id="rangeSelect">
+            <option value="1-20">1-20</option>
+            <option value="1-50">1-50</option>
+            <option value="10-99" selected>10-99</option>
+            <option value="1-99">1-99</option>
+            <option value="random">随机范围</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="countSelect">题目数量</label>
+          <select id="countSelect">
+            <option value="10">10 题</option>
+            <option value="20">20 题</option>
+            <option value="28" selected>28 题</option>
+            <option value="32">32 题</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button id="cancelConfig">取消</button>
+        <button id="applyConfig">应用</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">🌟🌟🌟🌟🌟</div>
+  <div class="footer-msg">认真答题，你是最棒的小数学家！加油！💪🎊</div>
+</div>
+
+<script>
+const emojis = ['🐶','🐱','🦊','🐸','🐣','🦄','🐧','🐢','🦋','🌸',
+                 '🍎','🍓','🍉','🌈','⭐','🎈','🎀','🚀','🌙','🎯',
+                 '😈','🎇','🍀','🍁','🎵','🎮','🎲','🧩','🧸','🎁',
+                 '🥇','🥳','🕶️','🧠','📚','✏️','🧪','🔔','🎤','🎬'];
+
+const config = {
+  carry: false,
+  subtract: false,
+  multiply: false,
+  divide: false,
+  rangeType: '10-99',
+  minValue: 10,
+  maxValue: 99,
+  count: 28,
+};
+
+const grid = document.getElementById('grid');
+const subtitle = document.getElementById('subtitle');
+const modal = document.getElementById('configModal');
+const openConfig = document.getElementById('openConfig');
+const closeConfig = document.getElementById('closeConfig');
+const cancelConfig = document.getElementById('cancelConfig');
+const applyConfig = document.getElementById('applyConfig');
+const carryCheckbox = document.getElementById('carryCheckbox');
+const subCheckbox = document.getElementById('subCheckbox');
+const mulCheckbox = document.getElementById('mulCheckbox');
+const divCheckbox = document.getElementById('divCheckbox');
+const rangeSelect = document.getElementById('rangeSelect');
+const countSelect = document.getElementById('countSelect');
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function updateSubtitle() {
+  const ops = ['加法'];
+  if (config.subtract) ops.push('减法');
+  if (config.multiply) ops.push('乘法');
+  if (config.divide) ops.push('除法');
+  const carryText = config.carry ? '含进位' : '不进位';
+  const rangeText = config.rangeType === 'random' ? '随机范围' : `${config.minValue}-${config.maxValue}`;
+  subtitle.textContent = `${rangeText} 数字练习 · ${ops.join('、')} · ${carryText} · 共${config.count}题`;
+}
+
+function chooseOperator() {
+  const ops = ['add'];
+  if (config.subtract) ops.push('sub');
+  if (config.multiply) ops.push('mul');
+  if (config.divide) ops.push('div');
+  return ops[Math.floor(Math.random() * ops.length)];
+}
+
+function padDigits(num) {
+  return String(num).padStart(2, '0').split('').map(Number);
+}
+
+function canUseNoCarry(a, b) {
+  const da = padDigits(a);
+  const db = padDigits(b);
+  const len = Math.max(da.length, db.length);
+  for (let i = 0; i < len; i++) {
+    const x = da[da.length - len + i] ?? 0;
+    const y = db[db.length - len + i] ?? 0;
+    if (x + y > 9) return false;
+  }
+  return true;
+}
+
+function chooseRandomRange() {
+  const min = getRandomInt(1, 80);
+  const max = getRandomInt(min + 5, 99);
+  return [min, max];
+}
+
+function genProblem() {
+  while (true) {
+    const op = chooseOperator();
+    const [min, max] = config.rangeType === 'random' ? chooseRandomRange() : [config.minValue, config.maxValue];
+    const a = getRandomInt(min, max);
+    const b = getRandomInt(min, max);
+
+    if (op === 'add') {
+      if (!config.carry && !canUseNoCarry(a, b)) continue;
+      return { a, b, op: '＋' };
+    }
+
+    if (op === 'sub') {
+      const bigger = Math.max(a, b);
+      const smaller = Math.min(a, b);
+      return { a: bigger, b: smaller, op: '−' };
+    }
+
+    if (op === 'mul') {
+      return { a, b, op: '×' };
+    }
+
+    if (op === 'div') {
+      if (b === 0) continue;
+      const dividend = a * b;
+      if (dividend < min || dividend > max) continue;
+      return { a: dividend, b, op: '÷' };
+    }
+  }
+}
+
+function createGrid() {
+  grid.innerHTML = '';
+  for (let i = 0; i < config.count; i++) {
+    const problem = genProblem();
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="num-badge">${i + 1}</div>
+      <span class="emoji">${emojis[i % emojis.length]}</span>
+      <div class="equation">
+        <span>${problem.a}</span>
+        <span class="eq-op">${problem.op}</span>
+        <span>${problem.b}</span>
+        <span class="eq-eq">＝</span>
+        <span class="answer-box"></span>
+      </div>
+    `;
+    grid.appendChild(card);
+  }
+}
+
+function syncConfigUI() {
+  carryCheckbox.checked = config.carry;
+  subCheckbox.checked = config.subtract;
+  mulCheckbox.checked = config.multiply;
+  divCheckbox.checked = config.divide;
+  rangeSelect.value = config.rangeType;
+  countSelect.value = String(config.count);
+}
+
+function openModal() {
+  syncConfigUI();
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+}
+
+function closeModal() {
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+}
+
+function applySettings() {
+  config.carry = carryCheckbox.checked;
+  config.subtract = subCheckbox.checked;
+  config.multiply = mulCheckbox.checked;
+  config.divide = divCheckbox.checked;
+  config.rangeType = rangeSelect.value;
+  if (config.rangeType === 'random') {
+    config.minValue = 1;
+    config.maxValue = 99;
+  } else {
+    const [min, max] = rangeSelect.value.split('-').map(Number);
+    config.minValue = min;
+    config.maxValue = max;
+  }
+  config.count = Number(countSelect.value);
+  updateSubtitle();
+  createGrid();
+  closeModal();
+}
+
+openConfig.addEventListener('click', openModal);
+closeConfig.addEventListener('click', closeModal);
+cancelConfig.addEventListener('click', closeModal);
+modal.addEventListener('click', (event) => {
+  if (event.target === modal) closeModal();
+});
+applyConfig.addEventListener('click', applySettings);
+
+updateSubtitle();
+createGrid();
+</script>
+</body>
+</html>
