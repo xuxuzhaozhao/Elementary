@@ -513,7 +513,22 @@ function shuffle(array) {
 function speak(text) {
   if ('speechSynthesis' in window) {
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
+    const pinyinMap = {
+      'a': '啊', 'o': '喔', 'e': '鹅', 'i': '衣', 'u': '乌', 'ü': '鱼',
+      'ai': '爱', 'ei': '诶', 'ui': '威', 'ao': '奥', 'ou': '欧', 'iu': '优',
+      'ie': '耶', 'üe': '约', 'er': '儿', 'an': '安', 'en': '恩', 'in': '因',
+      'un': '温', 'ün': '晕', 'ang': '昂', 'eng': '亨', 'ing': '英', 'ong': '轰',
+      'b': '波', 'p': '坡', 'm': '摸', 'f': '佛', 'd': '得', 't': '特',
+      'n': '讷', 'l': '勒', 'g': '哥', 'k': '科', 'h': '喝', 'j': '鸡',
+      'q': '七', 'x': '西', 'zh': '知', 'ch': '吃', 'sh': '诗', 'r': '日',
+      'z': '资', 'c': '雌', 's': '思', 'y': '衣', 'w': '乌',
+      'zhi': '之', 'chi': '吃', 'shi': '诗', 'ri': '日', 'zi': '资', 'ci': '雌', 'si': '思',
+      'yi': '衣', 'wu': '乌', 'yu': '鱼', 'ye': '耶', 'yue': '约', 'yuan': '冤',
+      'yin': '因', 'yun': '晕', 'ying': '应'
+    };
+    
+    const speakText = pinyinMap[text] || text;
+    const utterance = new SpeechSynthesisUtterance(speakText);
     utterance.lang = 'zh-CN';
     utterance.rate = 0.8;
     utterance.pitch = 1;
