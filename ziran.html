@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自然小知识 🌿</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --c1: #FF6B6B; --c2: #FFD93D; --c3: #6BCB77; --c4: #4D96FF;
+    --c5: #FF922B; --c6: #CC5DE8; --c7: #20C997; --c8: #F06595;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 50%, #f0f9ff 100%);
+    min-height: 100vh;
+    padding: 10px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background:
+      radial-gradient(circle at 10% 15%, rgba(107,203,119,.12) 0%, transparent 35%),
+      radial-gradient(circle at 90% 10%, rgba(32,201,151,.12) 0%, transparent 35%),
+      radial-gradient(circle at 80% 85%, rgba(77,150,255,.12) 0%, transparent 35%),
+      radial-gradient(circle at 15% 80%, rgba(255,217,61,.15) 0%, transparent 35%);
+  }
+
+  .page {
+    position: relative; z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 24px;
+    padding: 28px 24px;
+    box-shadow:
+      0 0 0 6px #fff,
+      0 0 0 10px var(--c3),
+      0 8px 40px rgba(0,0,0,.10);
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 18px;
+  }
+
+  .stars-row {
+    font-size: 22px;
+    letter-spacing: 4px;
+    margin-bottom: 4px;
+    animation: twinkle 2s infinite alternate;
+  }
+  @keyframes twinkle { from{opacity:.7} to{opacity:1} }
+
+  .title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 30px;
+    background: linear-gradient(90deg, var(--c3), var(--c7), var(--c4), var(--c6), var(--c3));
+    background-size: 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: rainbow 4s linear infinite;
+    line-height: 1.2;
+  }
+  @keyframes rainbow { 0%{background-position:0%} 100%{background-position:200%} }
+
+  .subtitle {
+    font-size: 13px;
+    color: #888;
+    margin-top: 4px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  .method-section {
+    margin-bottom: 24px;
+  }
+
+  .method-title {
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 800;
+    color: #fff;
+    background: linear-gradient(135deg, var(--c3), var(--c7));
+    padding: 6px 16px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+
+  .method-title.space { background: linear-gradient(135deg, #1e3a8a, #3b82f6); }
+  .method-title.weather { background: linear-gradient(135deg, #f59e0b, #f97316); }
+  .method-title.plant { background: linear-gradient(135deg, var(--c3), #16a34a); }
+  .method-title.animal { background: linear-gradient(135deg, var(--c5), #dc2626); }
+  .method-title.water { background: linear-gradient(135deg, #0ea5e9, #06b6d4); }
+  .method-title.earth { background: linear-gradient(135deg, #a16207, #ca8a04); }
+  .method-title.physics { background: linear-gradient(135deg, var(--c6), #9333ea); }
+  .method-title.env { background: linear-gradient(135deg, var(--c3), #15803d); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px 12px;
+  }
+
+  .card {
+    border-radius: 16px;
+    padding: 14px 10px 12px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 3px solid transparent;
+    transition: transform .2s;
+    cursor: pointer;
+  }
+  .card:hover { transform: scale(1.04); }
+
+  .card:nth-child(8n+1)  { background: #f0fdf4; border-color: var(--c3); }
+  .card:nth-child(8n+2)  { background: #ecfdf5; border-color: var(--c7); }
+  .card:nth-child(8n+3)  { background: #eff6ff; border-color: var(--c4); }
+  .card:nth-child(8n+4)  { background: #fef3c7; border-color: var(--c2); }
+  .card:nth-child(8n+5)  { background: #fff7ed; border-color: var(--c5); }
+  .card:nth-child(8n+6)  { background: #fdf4ff; border-color: var(--c6); }
+  .card:nth-child(8n+7)  { background: #fff1f2; border-color: var(--c1); }
+  .card:nth-child(8n+0)  { background: #f0f9ff; border-color: #0ea5e9; }
+
+  .card-badge {
+    position: absolute; top: 6px; right: 6px;
+    font-size: 16px;
+  }
+
+  .emoji {
+    font-size: 28px;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .card-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 4px;
+  }
+
+  .card-desc {
+    font-size: 11px;
+    color: #666;
+    line-height: 1.3;
+    font-weight: 600;
+  }
+
+  .card.detail-card {
+    padding: 10px;
+  }
+
+  .detail-card .emoji {
+    font-size: 24px;
+  }
+
+  .detail-card .card-title {
+    font-size: 12px;
+  }
+
+  .detail-card .card-desc {
+    font-size: 10px;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 2px dashed #e5e7eb;
+  }
+
+  .footer-msg {
+    font-family: 'Fredoka One', cursive;
+    font-size: 13px;
+    background: linear-gradient(90deg, var(--c3), var(--c4), var(--c7));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .detail-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.4);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    z-index: 100;
+  }
+
+  .detail-modal.open { display: flex; }
+
+  .modal-content {
+    width: min(420px, 100%);
+    max-height: 80vh;
+    background: white;
+    border-radius: 22px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.2);
+    overflow: hidden;
+  }
+
+  .modal-header {
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .modal-emoji {
+    font-size: 36px;
+  }
+
+  .modal-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 18px;
+    color: #333;
+  }
+
+  .modal-close {
+    margin-left: auto;
+    border: none;
+    background: #f3f4f6;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-body {
+    padding: 18px 22px;
+    overflow-y: auto;
+    max-height: 60vh;
+  }
+
+  .fact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed #e5e7eb;
+  }
+
+  .fact-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .fact-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .fact-text {
+    font-size: 13px;
+    color: #444;
+    line-height: 1.5;
+    font-weight: 600;
+  }
+
+  @media (max-width: 700px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+    .title { font-size: 24px; }
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    body::before { display: none; }
+    .page { box-shadow: none; border-radius: 0; max-width: 100%; }
+    .card:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="stars-row">🌿🌱☘️🍀🌾🌴🪨⛅</div>
+    <div class="title">🌍 小学自然小知识 🌍</div>
+    <div class="subtitle">探索神奇的自然世界</div>
+  </div>
+
+  <div class="method-section">
+    <div class="method-title space">🌌 太阳系与星空</div>
+    <div class="grid">
+      <div class="card detail-card" onclick="showDetail('sun')">
+        <div class="card-badge">☀️</div>
+        <div class="emoji">☀️</div>
+        <div class="card-title">太阳</div>
+        <div class="card-desc">恒星，地球的能量来源</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('moon')">
+        <div class="card-badge">🌙</div>
+        <div class="emoji">🌙</div>
+        <div class="card-title">月球</div>
+        <div class="card-desc">地球的唯一卫星</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('earth')">
+        <div class="card-badge">🌍</div>
+        <div class="emoji">🌍</div>
+        <div class="card-title">地球</div>
+        <div class="card-desc">我们的家园</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('planets')">
+        <div class="card-badge">🪐</div>
+        <div class="emoji">🪐</div>
+        <div class="card-title">八大行星</div>
+        <div class="card-desc">水金地火木土天王海王</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="method-section">
+    <div class="method-title weather">⛅ 天气与气候</div>
+    <div class="grid">
+      <div class="card detail-card" onclick="showDetail('sunny')">
+        <div class="card-badge">☀️</div>
+        <div class="emoji">☀️</div>
+        <div class="card-title">晴天</div>
+        <div class="card-desc">云少，阳光充足</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('cloudy')">
+        <div class="card-badge">☁️</div>
+        <div class="emoji">☁️</div>
+        <div class="card-title">多云</div>
+        <div class="card-desc">天空中云较多</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('rainy')">
+        <div class="card-badge">🌧️</div>
+        <div class="emoji">🌧️</div>
+        <div class="card-title">雨天</div>
+        <div class="card-desc">水从云中落下</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('snow')">
+        <div class="card-badge">❄️</div>
+        <div class="emoji">❄️</div>
+        <div class="card-title">雪天</div>
+        <div class="card-desc">气温低于零度时形成</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('wind')">
+        <div class="card-badge">💨</div>
+        <div class="emoji">💨</div>
+        <div class="card-title">风</div>
+        <div class="card-desc">空气的流动</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('thunder')">
+        <div class="card-badge">⛈️</div>
+        <div class="emoji">⛈️</div>
+        <div class="card-title">雷电</div>
+        <div class="card-desc">云层放电现象</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('rainbow')">
+        <div class="card-badge">🌈</div>
+        <div class="emoji">🌈</div>
+        <div class="card-title">彩虹</div>
+        <div class="card-desc">阳光折射形成</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('fog')">
+        <div class="card-badge">🌫️</div>
+        <div class="emoji">🌫️</div>
+        <div class="card-title">雾</div>
+        <div class="card-desc">近地面的水汽凝结</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="method-section">
+    <div class="method-title plant">🌱 植物世界</div>
+    <div class="grid">
+      <div class="card detail-card" onclick="showDetail('photosynthesis')">
+        <div class="card-badge">🌞</div>
+        <div class="emoji">🌞</div>
+        <div class="card-title">光合作用</div>
+        <div class="card-desc">植物制造食物的过程</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('parts')">
+        <div class="card-badge">🌻</div>
+        <div class="emoji">🌻</div>
+        <div class="card-title">植物器官</div>
+        <div class="card-desc">根茎叶花果实种子</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('trees')">
+        <div class="card-badge">🌳</div>
+        <div class="emoji">🌳</div>
+        <div class="card-title">树木</div>
+        <div class="card-desc">落叶树与常绿树</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('flowers')">
+        <div class="card-badge">🌸</div>
+        <div class="emoji">🌸</div>
+        <div class="card-title">花</div>
+        <div class="card-desc">植物的繁殖器官</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="method-section">
+    <div class="method-title animal">🐾 动物王国</div>
+    <div class="grid">
+      <div class="card detail-card" onclick="showDetail('mammals')">
+        <div class="card-badge">🦁</div>
+        <div class="emoji">🦁</div>
+        <div class="card-title">哺乳动物</div>
+        <div class="card-desc">胎生、哺乳、毛皮</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('birds')">
+        <div class="card-badge">🦅</div>
+        <div class="emoji">🦅</div>
+        <div class="card-title">鸟类</div>
+        <div class="card-desc">羽毛、翅膀、孵蛋</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('fish')">
+        <div class="card-badge">🐟</div>
+        <div class="emoji">🐟</div>
+        <div class="card-title">鱼类</div>
+        <div class="card-desc">用鳃呼吸，有鳞片</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('insects')">
+        <div class="card-badge">🦋</div>
+        <div class="emoji">🦋</div>
+        <div class="card-title">昆虫</div>
+        <div class="card-desc">六条腿，多数有翅膀</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('reptiles')">
+        <div class="card-badge">🦎</div>
+        <div class="emoji">🦎</div>
+        <div class="card-title">爬行动物</div>
+        <div class="card-desc">冷血，鳞片覆盖</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('amphibians')">
+        <div class="card-badge">🐸</div>
+        <div class="emoji">🐸</div>
+        <div class="card-title">两栖动物</div>
+        <div class="card-desc">水陆两栖</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('migration')">
+        <div class="card-badge">🦅</div>
+        <div class="emoji">🦅</div>
+        <div class="card-title">动物迁徙</div>
+        <div class="card-desc">随季节移动</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('hibernation')">
+        <div class="card-badge">😴</div>
+        <div class="emoji">😴</div>
+        <div class="card-title">冬眠</div>
+        <div class="card-desc">动物冬季睡眠</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="method-section">
+    <div class="method-title water">💧 水循环</div>
+    <div class="grid">
+      <div class="card detail-card" onclick="showDetail('watercycle')">
+        <div class="card-badge">🔄</div>
+        <div class="emoji">🔄</div>
+        <div class="card-title">水循环</div>
+        <div class="card-desc">蒸发→凝结→降水→径流</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('evaporation')">
+        <div class="card-badge">♨️</div>
+        <div class="emoji">♨️</div>
+        <div class="card-title">蒸发</div>
+        <div class="card-desc">水变成水蒸气</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('precipitation')">
+        <div class="card-badge">🌧️</div>
+        <div class="emoji">🌧️</div>
+        <div class="card-title">降水</div>
+        <div class="card-desc">雨、雪、冰雹落下</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('clouds')">
+        <div class="card-badge">☁️</div>
+        <div class="emoji">☁️</div>
+        <div class="card-title">云</div>
+        <div class="card-desc">水蒸气凝结形成</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="method-section">
+    <div class="method-title earth">🌍 地球与四季</div>
+    <div class="grid">
+      <div class="card detail-card" onclick="showDetail('seasons')">
+        <div class="card-badge">🌸</div>
+        <div class="emoji">🌸</div>
+        <div class="card-title">四季变化</div>
+        <div class="card-desc">春夏秋冬</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('daynight')">
+        <div class="card-badge">🌅</div>
+        <div class="emoji">🌅</div>
+        <div class="card-title">昼夜交替</div>
+        <div class="card-desc">地球自转造成</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('moonphase')">
+        <div class="card-badge">🌙</div>
+        <div class="emoji">🌙</div>
+        <div class="card-title">月相变化</div>
+        <div class="card-desc">新月满月上弦月下弦月</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('compass')">
+        <div class="card-badge">🧭</div>
+        <div class="emoji">🧭</div>
+        <div class="card-title">方向辨认</div>
+        <div class="card-desc">东西南北</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="method-section">
+    <div class="method-title physics">⚡ 简单物理</div>
+    <div class="grid">
+      <div class="card detail-card" onclick="showDetail('light')">
+        <div class="card-badge">💡</div>
+        <div class="emoji">💡</div>
+        <div class="card-title">光的传播</div>
+        <div class="card-desc">沿直线传播</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('shadow')">
+        <div class="card-badge">🌑</div>
+        <div class="emoji">🌑</div>
+        <div class="card-title">影子</div>
+        <div class="card-desc">光沿直线传播形成</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('sound')">
+        <div class="card-badge">🔊</div>
+        <div class="emoji">🔊</div>
+        <div class="card-title">声音</div>
+        <div class="card-desc">物体振动产生</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('magnet')">
+        <div class="card-badge">🧲</div>
+        <div class="emoji">🧲</div>
+        <div class="card-title">磁铁</div>
+        <div class="card-desc">同名相斥异名相吸</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('electricity')">
+        <div class="card-badge">⚡</div>
+        <div class="emoji">⚡</div>
+        <div class="card-title">电</div>
+        <div class="card-desc">电流与电路</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('float')">
+        <div class="card-badge">🛟</div>
+        <div class="emoji">🛟</div>
+        <div class="card-title">浮力</div>
+        <div class="card-desc">物体在水中受到向上的力</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('heat')">
+        <div class="card-badge">🔥</div>
+        <div class="emoji">🔥</div>
+        <div class="card-title">热传递</div>
+        <div class="card-desc">传导对流辐射</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('friction')">
+        <div class="card-badge">🛝</div>
+        <div class="emoji">🛝</div>
+        <div class="card-title">摩擦力</div>
+        <div class="card-desc">阻碍物体运动</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="method-section">
+    <div class="method-title env">🌍 环境保护</div>
+    <div class="grid">
+      <div class="card detail-card" onclick="showDetail('recycle')">
+        <div class="card-badge">♻️</div>
+        <div class="emoji">♻️</div>
+        <div class="card-title">垃圾分类</div>
+        <div class="card-desc">可回收、厨余、有害、其他</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('savewater')">
+        <div class="card-badge">💧</div>
+        <div class="emoji">💧</div>
+        <div class="card-title">节约用水</div>
+        <div class="card-desc">珍惜每一滴水</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('energy')">
+        <div class="card-badge">💡</div>
+        <div class="emoji">💡</div>
+        <div class="card-title">节约能源</div>
+        <div class="card-desc">随手关灯节约用电</div>
+      </div>
+      <div class="card detail-card" onclick="showDetail('nature')">
+        <div class="card-badge">🌳</div>
+        <div class="emoji">🌳</div>
+        <div class="card-title">保护自然</div>
+        <div class="card-desc">不捕捉野生动物</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-msg">探索自然奥秘，发现科学乐趣！🌟🌈</div>
+  </div>
+</div>
+
+<div id="detailModal" class="detail-modal" onclick="closeModal(event)">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-emoji" id="modalEmoji">🌍</div>
+      <div class="modal-title" id="modalTitle">标题</div>
+      <button class="modal-close" onclick="closeModalDirect()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+const knowledgeData = {
+  sun: {
+    emoji: '☀️',
+    title: '太阳',
+    facts: [
+      { icon: '🔥', text: '太阳是一颗恒星，直径约139万公里，是地球的109倍' },
+      { icon: '💡', text: '太阳表面温度约5500摄氏度，中心温度高达1500万摄氏度' },
+      { icon: '🌍', text: '太阳光到达地球需要约8分钟' },
+      { icon: '☀️', text: '太阳为地球提供光和热，是所有生命的能量来源' }
+    ]
+  },
+  moon: {
+    emoji: '🌙',
+    title: '月球',
+    facts: [
+      { icon: '🌙', text: '月球是地球唯一的天然卫星，直径约3476公里' },
+      { icon: '🥉', text: '月球表面布满了环形山和月海' },
+      { icon: '🏃', text: '月球引力造成地球上的潮汐现象' },
+      { icon: '🚀', text: '1969年人类首次登月，阿姆斯特朗成为第一个踏上月球的人' }
+    ]
+  },
+  earth: {
+    emoji: '🌍',
+    title: '地球',
+    facts: [
+      { icon: '🔵', text: '地球表面约71%被水覆盖，因此被称为"蓝色星球"' },
+      { icon: '🌍', text: '地球是太阳系中唯一已知存在生命的星球' },
+      { icon: '🌡️', text: '地球大气层保护生物免受有害射线伤害' },
+      { icon: '🔄', text: '地球自转一圈约24小时，产生昼夜交替' }
+    ]
+  },
+  planets: {
+    emoji: '🪐',
+    title: '八大行星',
+    facts: [
+      { icon: '🌍', text: '水星、金星、地球、火星是岩石行星' },
+      { icon: '🪐', text: '木星、土星、天王星、海王星是气态巨行星' },
+      { icon: '☀️', text: '太阳系八大行星按离太阳从近到远：水金地火木土天海' },
+      { icon: '🪐', text: '冥王星已被重新分类为矮行星' }
+    ]
+  },
+  sunny: {
+    emoji: '☀️',
+    title: '晴天',
+    facts: [
+      { icon: '☀️', text: '晴天时天空中云量很少，阳光充足' },
+      { icon: '🌡️', text: '晴天大气透明度高，气温日较差大' },
+      { icon: '🌈', text: '晴天时更容易看到彩虹和晚霞' }
+    ]
+  },
+  cloudy: {
+    emoji: '☁️',
+    title: '多云',
+    facts: [
+      { icon: '☁️', text: '多云是指天空中云量较多，但未达到阴天' },
+      { icon: '🌥️', text: '多云天气可以阻挡部分紫外线' },
+      { icon: '🌡️', text: '多云天气气温日较差较小' }
+    ]
+  },
+  rainy: {
+    emoji: '🌧️',
+    title: '雨天',
+    facts: [
+      { icon: '💧', text: '降雨是水循环的重要环节' },
+      { icon: '🌧️', text: '根据降雨量分为小雨、中雨、大雨、暴雨' },
+      { icon: '☔', text: '雨天出行记得带伞，注意安全' },
+      { icon: '🌱', text: '降雨滋润农作物，促进植物生长' }
+    ]
+  },
+  snow: {
+    emoji: '❄️',
+    title: '雪天',
+    facts: [
+      { icon: '❄️', text: '雪是水蒸气直接凝华形成的冰晶' },
+      { icon: '🌡️', text: '气温低于0摄氏度时，水滴凝结成雪' },
+      { icon: '🏔️', text: '雪可以保护农作物安全越冬' },
+      { icon: '⛷️', text: '雪是北方冬季常见的天气现象' }
+    ]
+  },
+  wind: {
+    emoji: '💨',
+    title: '风',
+    facts: [
+      { icon: '💨', text: '风是空气从高压区向低压区流动形成的' },
+      { icon: '🌊', text: '风力等级从0级到12级，级数越高风越大' },
+      { icon: '🌀', text: '台风是强烈的热带气旋，风力可达12级以上' },
+      { icon: '🌬️', text: '风可以发电、传播种子和花粉' }
+    ]
+  },
+  thunder: {
+    emoji: '⛈️',
+    title: '雷电',
+    facts: [
+      { icon: '⚡', text: '雷电是云层之间或云与地面之间的放电现象' },
+      { icon: '🌩️', text: '先看到闪电，后听到雷声，因为光速比声速快' },
+      { icon: '🏠', text: '雷雨天不要在大树下躲雨，避免雷击' },
+      { icon: '🔌', text: '现代建筑都有避雷针，保护建筑物免受雷击' }
+    ]
+  },
+  rainbow: {
+    emoji: '🌈',
+    title: '彩虹',
+    facts: [
+      { icon: '🌈', text: '彩虹是阳光穿过雨滴时发生折射和反射形成的' },
+      { icon: '🎨', text: '彩虹有七种颜色：红橙黄绿蓝靛紫' },
+      { icon: '🌈', text: '彩虹出现在太阳相对的方向，雨后常见' },
+      { icon: '🌈', text: '有时候会看到两道彩虹，第二道叫霓，颜色顺序相反' }
+    ]
+  },
+  fog: {
+    emoji: '🌫️',
+    title: '雾',
+    facts: [
+      { icon: '🌫️', text: '雾是近地面空气中水蒸气凝结成小水滴' },
+      { icon: '🚗', text: '大雾天气能见度低，开车要开雾灯' },
+      { icon: '🌁', text: '雾与云的区别在于雾贴近地面，云在高处' }
+    ]
+  },
+  photosynthesis: {
+    emoji: '🌞',
+    title: '光合作用',
+    facts: [
+      { icon: '🌿', text: '植物通过光合作用制造养料' },
+      { icon: 'CO₂', text: '光合作用吸收二氧化碳，释放氧气' },
+      { icon: '💧', text: '光合作用需要阳光、水和二氧化碳' },
+      { icon: '🍬', text: '光合作用产生的葡萄糖是植物的食物' }
+    ]
+  },
+  parts: {
+    emoji: '🌻',
+    title: '植物器官',
+    facts: [
+      { icon: '🫚', text: '根：吸收水分和无机盐，固定植物' },
+      { icon: '🌾', text: '茎：运输水分和养料，支撑植物' },
+      { icon: '🍃', text: '叶：进行光合作用，呼吸作用' },
+      { icon: '🌸', text: '花：植物的繁殖器官' },
+      { icon: '🍎', text: '果实：保护种子' },
+      { icon: '🌱', text: '种子：繁殖后代' }
+    ]
+  },
+  trees: {
+    emoji: '🌳',
+    title: '树木',
+    facts: [
+      { icon: '🍂', text: '落叶树：秋天落叶，如杨树、柳树、槐树' },
+      { icon: '🌲', text: '常绿树：一年四季都有叶子，如松树、柏树' },
+      { icon: '🌳', text: '年轮：树木横切面上的圈纹，可以判断年龄' },
+      { icon: '🏠', text: '树木可以制作家具、纸张，保护环境' }
+    ]
+  },
+  flowers: {
+    emoji: '🌸',
+    title: '花',
+    facts: [
+      { icon: '🌸', text: '花是植物的繁殖器官' },
+      { icon: '🐝', text: '花的颜色和香味吸引昆虫传粉' },
+      { icon: '🌺', text: '花由花萼、花瓣、雄蕊、雌蕊组成' },
+      { icon: '🍎', text: '花受粉后发育成果实和种子' }
+    ]
+  },
+  mammals: {
+    emoji: '🦁',
+    title: '哺乳动物',
+    facts: [
+      { icon: '🤱', text: '哺乳动物用乳汁喂养幼崽' },
+      { icon: '🐾', text: '哺乳动物身体覆盖毛发（少数如水豚、海豚例外）' },
+      { icon: '🦷', text: '哺乳动物有恒定的体温' },
+      { icon: '🐘', text: '哺乳动物是动物界最高等的类群' }
+    ]
+  },
+  birds: {
+    emoji: '🦅',
+    title: '鸟类',
+    facts: [
+      { icon: '🪶', text: '鸟类身体覆盖羽毛，前肢变成翅膀' },
+      { icon: '🥚', text: '鸟类是卵生动物，孵化后代' },
+      { icon: '�爪子', text: '鸟类骨骼中空，减轻体重利于飞行' },
+      { icon: '🐦', text: '鸟类体温高而恒定，约42摄氏度' }
+    ]
+  },
+  fish: {
+    emoji: '🐟',
+    title: '鱼类',
+    facts: [
+      { icon: '🌊', text: '鱼类终生生活在水中，用鳃呼吸' },
+      { icon: '🐟', text: '鱼类身体覆盖鳞片，有侧线感知水流' },
+      { icon: '🦈', text: '大多数鱼类体温随水温变化，是冷血动物' },
+      { icon: '🐠', text: '鱼鳍帮助鱼类游动和保持平衡' }
+    ]
+  },
+  insects: {
+    emoji: '🦋',
+    title: '昆虫',
+    facts: [
+      { icon: '🦵', text: '昆虫身体分为头、胸、腹三部分，有6条腿' },
+      { icon: '🦋', text: '多数昆虫有翅膀，能飞行' },
+      { icon: '🐛', text: '昆虫发育有完全变态和不完全变态' },
+      { icon: '🐝', text: '蜜蜂、蝴蝶、蚂蚁都是昆虫' }
+    ]
+  },
+  reptiles: {
+    emoji: '🦎',
+    title: '爬行动物',
+    facts: [
+      { icon: '🦎', text: '爬行动物身体覆盖鳞片或甲壳' },
+      { icon: '🥚', text: '爬行动物是冷血动物，卵生或卵胎生' },
+      { icon: '🐍', text: '蛇、龟、鳄鱼、蜥蜴都是爬行动物' },
+      { icon: '🌞', text: '爬行动物需要晒太阳来调节体温' }
+    ]
+  },
+  amphibians: {
+    emoji: '🐸',
+    title: '两栖动物',
+    facts: [
+      { icon: '🐸', text: '两栖动物幼体在水中生活，成体可以陆地生活' },
+      { icon: '🏊', text: '两栖动物用鳃呼吸，后用肺呼吸' },
+      { icon: '🥚', text: '青蛙、蟾蜍、蝾螈都是两栖动物' },
+      { icon: '💧', text: '两栖动物皮肤湿润，可以辅助呼吸' }
+    ]
+  },
+  migration: {
+    emoji: '🦅',
+    title: '动物迁徙',
+    facts: [
+      { icon: '🦅', text: '动物迁徙是为了寻找食物或适宜的繁殖环境' },
+      { icon: '🐦', text: '候鸟随季节变化南北迁徙' },
+      { icon: '🐟', text: '鱼类如三文鱼会溯河洄游产卵' },
+      { icon: '🦌', text: '非洲草原的角马随雨季迁徙' }
+    ]
+  },
+  hibernation: {
+    emoji: '😴',
+    title: '冬眠',
+    facts: [
+      { icon: '🐻', text: '冬眠是动物在冬季降低体温和代谢的生存方式' },
+      { icon: '🐿️', text: '松鼠、熊、刺猬都会冬眠' },
+      { icon: '💤', text: '冬眠期间动物不吃不喝，依靠脂肪维持生命' },
+      { icon: '🌸', text: '有些动物还会夏眠，如非洲肺鱼' }
+    ]
+  },
+  watercycle: {
+    emoji: '🔄',
+    title: '水循环',
+    facts: [
+      { icon: '☀️', text: '太阳热量使地表水蒸发变成水蒸气' },
+      { icon: '☁️', text: '水蒸气上升到高空凝结成小水滴形成云' },
+      { icon: '🌧️', text: '水汽凝结到一定程度形成降水落回地面' },
+      { icon: '🏞️', text: '降水形成地表径流或渗入地下成为地下水' }
+    ]
+  },
+  evaporation: {
+    emoji: '♨️',
+    title: '蒸发',
+    facts: [
+      { icon: '☀️', text: '蒸发是水从液态变成气态的过程' },
+      { icon: '🌡️', text: '温度越高，蒸发越快' },
+      { icon: '💨', text: '风吹加速蒸发' },
+      { icon: '🌊', text: '海洋、湖泊、河流表面都在不断蒸发' }
+    ]
+  },
+  precipitation: {
+    emoji: '🌧️',
+    title: '降水',
+    facts: [
+      { icon: '💧', text: '降水包括雨、雪、冰雹、霜等形式' },
+      { icon: '☁️', text: '云中的小水滴增大到一定程度就落下形成降水' },
+      { icon: '📏', text: '降雨量用毫米表示，如大雨24小时降雨量25-50毫米' }
+    ]
+  },
+  clouds: {
+    emoji: '☁️',
+    title: '云',
+    facts: [
+      { icon: '☁️', text: '云是水蒸气凝结成的小水滴或冰晶' },
+      { icon: '🌧️', text: '积云通常预示晴天，卷云可能预示下雨' },
+      { icon: '🏔️', text: '云漂浮在空中是因为上升气流的支持' },
+      { icon: '☁️', text: '云可以帮助调节地球表面温度' }
+    ]
+  },
+  seasons: {
+    emoji: '🌸',
+    title: '四季变化',
+    facts: [
+      { icon: '🌸', text: '春季：万物复苏，植物发芽，动物繁殖' },
+      { icon: '☀️', text: '夏季：温度最高，日照最长' },
+      { icon: '🍎', text: '秋季：果实成熟，树叶变色落叶' },
+      { icon: '❄️', text: '冬季：温度最低，部分动物冬眠' },
+      { icon: '🌍', text: '四季形成是因为地球公转时地轴倾斜' }
+    ]
+  },
+  daynight: {
+    emoji: '🌅',
+    title: '昼夜交替',
+    facts: [
+      { icon: '🌍', text: '地球自西向东自转一周约24小时' },
+      { icon: '☀️', text: '朝向太阳的一面是白昼，背对太阳是黑夜' },
+      { icon: '🌙', text: '中国处于东半球，比格林威治时间早8小时' }
+    ]
+  },
+  moonphase: {
+    emoji: '🌙',
+    title: '月相变化',
+    facts: [
+      { icon: '🌑', text: '新月：月亮被阴影遮挡，看不见' },
+      { icon: '🌒', text: '蛾眉月：像眉毛一样弯弯的' },
+      { icon: '🌓', text: '上弦月：半个月亮，缺口朝上' },
+      { icon: '🌕', text: '满月：整个月亮都是亮的' },
+      { icon: '🌙', text: '月相变化周期约29.5天' }
+    ]
+  },
+  compass: {
+    emoji: '🧭',
+    title: '方向辨认',
+    facts: [
+      { icon: '☀️', text: '太阳东升西落，可以帮助判断东西方向' },
+      { icon: '⭐', text: '北极星指向正北方向' },
+      { icon: '🧭', text: '指南针的北极指向地球北极' },
+      { icon: '🌲', text: '苔藓通常长在树木的北侧（北半球）' }
+    ]
+  },
+  light: {
+    emoji: '💡',
+    title: '光的传播',
+    facts: [
+      { icon: '📏', text: '光在同一种介质中沿直线传播' },
+      { icon: '⚡', text: '光速是宇宙中最快的速度，约30万公里/秒' },
+      { icon: '🌞', text: '太阳光到达地球约需8分钟' }
+    ]
+  },
+  shadow: {
+    emoji: '🌑',
+    title: '影子',
+    facts: [
+      { icon: '📐', text: '影子是光沿直线传播时被物体遮挡形成的' },
+      { icon: '⏰', text: '一天中影子长短变化：早晚长，中午短' },
+      { icon: '🌑', text: '影子的方向与光源方向相反' }
+    ]
+  },
+  sound: {
+    emoji: '🔊',
+    title: '声音',
+    facts: [
+      { icon: '🔊', text: '声音由物体振动产生，通过空气传播' },
+      { icon: '📏', text: '声音传播需要介质，固体、液体、气体都可以' },
+      { icon: '🔈', text: '声音在空气中传播速度约340米/秒' },
+      { icon: '📳', text: '超声波和次声波是人耳听不到的声音' }
+    ]
+  },
+  magnet: {
+    emoji: '🧲',
+    title: '磁铁',
+    facts: [
+      { icon: '🧲', text: '磁铁有南极和北极，同名相斥，异名相吸' },
+      { icon: '🧭', text: '地球本身就是一个大磁铁' },
+      { icon: '🔩', text: '磁铁可以吸引铁、钴、镍等金属' },
+      { icon: '🧲', text: '磁悬浮列车利用磁力排斥原理运行' }
+    ]
+  },
+  electricity: {
+    emoji: '⚡',
+    title: '电',
+    facts: [
+      { icon: '⚡', text: '电流是电荷的定向移动形成的' },
+      { icon: '🔌', text: '电路需要闭合才能通电' },
+      { icon: '💡', text: '导体可以让电流通过，绝缘体不能' },
+      { icon: '⚠️', text: '湿手不要触碰电器，不要靠近高压电' }
+    ]
+  },
+  float: {
+    emoji: '🛟',
+    title: '浮力',
+    facts: [
+      { icon: '🛟', text: '浸在液体中的物体受到向上的浮力' },
+      { icon: '⚖️', text: '浮力大小等于物体排开液体的重量（阿基米德原理）' },
+      { icon: '🚢', text: '轮船漂浮在水面上，虽然很重但排开大量水' },
+      { icon: '🎈', text: '热气球上升是因为热空气比冷空气轻' }
+    ]
+  },
+  heat: {
+    emoji: '🔥',
+    title: '热传递',
+    facts: [
+      { icon: '🔥', text: '热传导：热量通过直接接触传递，如金属导热' },
+      { icon: '💨', text: '热对流：热量通过流体流动传递，如烧水' },
+      { icon: '☀️', text: '热辐射：热量通过电磁波传递，如太阳给地球热量' },
+      { icon: '🧥', text: '冬天穿棉衣保暖是因为棉衣能阻止热传导' }
+    ]
+  },
+  friction: {
+    emoji: '🛝',
+    title: '摩擦力',
+    facts: [
+      { icon: '🛝', text: '两个物体接触并相对运动时会产生摩擦力' },
+      { icon: '🦶', text: '摩擦力方向与运动方向相反' },
+      { icon: '🔥', text: '摩擦生热，如搓手可以取暖' },
+      { icon: '🛞', text: '轮胎有纹路是为了增加与地面的摩擦力' }
+    ]
+  },
+  recycle: {
+    emoji: '♻️',
+    title: '垃圾分类',
+    facts: [
+      { icon: '♻️', text: '可回收物：废纸、塑料瓶、金属、玻璃' },
+      { icon: '🍎', text: '厨余垃圾：剩菜剩饭、果皮菜叶' },
+      { icon: '☠️', text: '有害垃圾：电池、灯管、过期药品' },
+      { icon: '🗑️', text: '其他垃圾：砖瓦陶瓷、尘土、卫生纸' }
+    ]
+  },
+  savewater: {
+    emoji: '💧',
+    title: '节约用水',
+    facts: [
+      { icon: '🚿', text: '刷牙时关闭水龙头可以省很多水' },
+      { icon: '💧', text: '一水多用：洗菜水浇花，洗衣水冲厕所' },
+      { icon: '🚰', text: '发现水龙头漏水及时修理' },
+      { icon: '🌍', text: '地球淡水资源有限，要珍惜每一滴水' }
+    ]
+  },
+  energy: {
+    emoji: '💡',
+    title: '节约能源',
+    facts: [
+      { icon: '💡', text: '离开房间时随手关灯' },
+      { icon: '❄️', text: '空调温度不要调太低或太高，省电又健康' },
+      { icon: '🔋', text: '电动汽车比燃油汽车更环保' },
+      { icon: '☀️', text: '太阳能是可再生的清洁能源' }
+    ]
+  },
+  nature: {
+    emoji: '🌳',
+    title: '保护自然',
+    facts: [
+      { icon: '🌳', text: '保护森林，禁止乱砍滥伐' },
+      { icon: '🐼', text: '保护野生动物，不捕杀、不买卖' },
+      { icon: '🏞️', text: '不乱扔垃圾，保持环境整洁' },
+      { icon: '🌿', text: '爱护花草树木，不随意采摘' }
+    ]
+  }
+};
+
+function showDetail(key) {
+  const data = knowledgeData[key];
+  if (!data) return;
+  
+  document.getElementById('modalEmoji').textContent = data.emoji;
+  document.getElementById('modalTitle').textContent = data.title;
+  
+  const factsHtml = data.facts.map(fact => `
+    <div class="fact-item">
+      <span class="fact-icon">${fact.icon}</span>
+      <span class="fact-text">${fact.text}</span>
+    </div>
+  `).join('');
+  
+  document.getElementById('modalBody').innerHTML = factsHtml;
+  document.getElementById('detailModal').classList.add('open');
+}
+
+function closeModal(event) {
+  if (event.target === document.getElementById('detailModal')) {
+    document.getElementById('detailModal').classList.remove('open');
+  }
+}
+
+function closeModalDirect() {
+  document.getElementById('detailModal').classList.remove('open');
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeModalDirect();
+  }
+});
+</script>
+</body>
+</html>
