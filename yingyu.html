@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>英语练习题 🌈</title>
+<title>英语单词小课堂 🌈</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -70,12 +70,49 @@
   }
   @keyframes rainbow { 0%{background-position:0%} 100%{background-position:200%} }
 
+  .subtitle-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
   .subtitle {
     font-size: 13px;
     color: #888;
-    margin-top: 4px;
     font-weight: 700;
     letter-spacing: 1px;
+  }
+
+  .config-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--c4), var(--c6));
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .config-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(77,150,255,.4);
+  }
+
+  .speak-hint {
+    font-size: 12px;
+    color: var(--c4);
+    margin-top: 8px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
   }
 
   .info-row {
@@ -122,9 +159,17 @@
     position: relative;
     overflow: hidden;
     border: 3px solid transparent;
-    transition: transform .2s;
+    transition: transform .2s, box-shadow .2s;
+    cursor: pointer;
   }
-  .card:hover { transform: scale(1.04); }
+  .card:hover { 
+    transform: scale(1.04);
+    box-shadow: 0 6px 16px rgba(0,0,0,.1);
+  }
+  .card.active {
+    box-shadow: 0 0 0 3px var(--c4), 0 6px 20px rgba(77,150,255,.3);
+    transform: scale(1.02);
+  }
 
   .card:nth-child(8n+1)  { background: #FFF3F3; border-color: var(--c1); }
   .card:nth-child(8n+2)  { background: #FFFBEA; border-color: var(--c2); }
@@ -299,6 +344,7 @@
     .card  { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .info-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .num-badge { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .config-btn, .modal { display: none; }
     @page { size: A4; margin: 10mm 12mm; }
   }
 </style>
@@ -309,7 +355,11 @@
   <div class="header">
     <div class="stars-row">🌟ABC🎈📚✨🧠💡🎉</div>
     <div class="title">🔤 英语单词小课堂 🔤</div>
-    <div class="subtitle" id="subtitle">认识常用英语单词，轻松学英语！</div>
+    <div class="subtitle-row">
+      <div class="subtitle" id="subtitle">认识常用英语单词，轻松学英语！</div>
+      <button class="config-btn" id="openConfig" aria-label="配置">⚙️</button>
+    </div>
+    <div class="speak-hint">👆 点击卡片听美式发音</div>
   </div>
 
   <div class="info-row">
@@ -330,6 +380,48 @@
   <div class="footer-msg">英语学习，快乐开始！🌟🎊</div>
 </div>
 
+<div id="configModal" class="modal" aria-hidden="true">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div>单词学习配置</div>
+      <button class="close-btn" id="closeConfig">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>选择学习类别</label>
+        <select id="categorySelect">
+          <option value="fruits">🍎 水果类</option>
+          <option value="animals">🐶 动物类</option>
+          <option value="vehicles">🚗 交通工具</option>
+          <option value="food">🍕 食物类</option>
+          <option value="daily">🏠 生活用品</option>
+          <option value="colors">🎨 颜色</option>
+          <option value="shapes">🔷 形状</option>
+          <option value="weather">🌤️ 天气</option>
+          <option value="school">📚 学习用品</option>
+          <option value="family">👨‍👩‍👧‍👦 家庭成员</option>
+          <option value="all">🎯 全部类别</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="countSelect">卡片数量</label>
+        <select id="countSelect">
+          <option value="5">5 张</option>
+          <option value="10">10 张</option>
+          <option value="16">16 张</option>
+          <option value="20">20 张</option>
+          <option value="24">24 张</option>
+          <option value="28">28 张</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button id="cancelConfig">取消</button>
+      <button id="applyConfig">应用</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const wordData = {
   fruits: [
@@ -340,7 +432,15 @@ const wordData = {
     { word: 'Strawberry', icon: '🍓', translation: '草莓', example: 'Red strawberry.' },
     { word: 'Watermelon', icon: '🍉', translation: '西瓜', example: 'Big watermelon.' },
     { word: 'Peach', icon: '🍑', translation: '桃子', example: 'Soft peach.' },
-    { word: 'Cherry', icon: '🍒', translation: '樱桃', example: 'Small cherry.' }
+    { word: 'Cherry', icon: '🍒', translation: '樱桃', example: 'Small cherry.' },
+    { word: 'Pineapple', icon: '🍍', translation: '菠萝', example: 'Spiky pineapple.' },
+    { word: 'Mango', icon: '🥭', translation: '芒果', example: 'Tropical mango.' },
+    { word: 'Kiwi', icon: '🥝', translation: '猕猴桃', example: 'Green kiwi.' },
+    { word: 'Lemon', icon: '🍋', translation: '柠檬', example: 'Sour lemon.' },
+    { word: 'Pear', icon: '🍐', translation: '梨', example: 'Crispy pear.' },
+    { word: 'Plum', icon: '🫐', translation: '李子', example: 'Purple plum.' },
+    { word: 'Coconut', icon: '🥥', translation: '椰子', example: 'Tropical coconut.' },
+    { word: 'Avocado', icon: '🥑', translation: '牛油果', example: 'Creamy avocado.' }
   ],
   animals: [
     { word: 'Dog', icon: '🐶', translation: '狗', example: 'Cute dog.' },
@@ -350,50 +450,226 @@ const wordData = {
     { word: 'Rabbit', icon: '🐰', translation: '兔子', example: 'White rabbit.' },
     { word: 'Bear', icon: '🐻', translation: '熊', example: 'Big bear.' },
     { word: 'Elephant', icon: '🐘', translation: '大象', example: 'Gray elephant.' },
-    { word: 'Butterfly', icon: '🦋', translation: '蝴蝶', example: 'Colorful butterfly.' }
+    { word: 'Butterfly', icon: '🦋', translation: '蝴蝶', example: 'Colorful butterfly.' },
+    { word: 'Lion', icon: '🦁', translation: '狮子', example: 'King lion.' },
+    { word: 'Tiger', icon: '🐯', translation: '老虎', example: 'Striped tiger.' },
+    { word: 'Panda', icon: '🐼', translation: '熊猫', example: 'Black and white panda.' },
+    { word: 'Monkey', icon: '🐵', translation: '猴子', example: 'Playful monkey.' },
+    { word: 'Dolphin', icon: '🐬', translation: '海豚', example: 'Smart dolphin.' },
+    { word: 'Penguin', icon: '🐧', translation: '企鹅', example: 'Cute penguin.' },
+    { word: 'Giraffe', icon: '🦒', translation: '长颈鹿', example: 'Tall giraffe.' },
+    { word: 'Zebra', icon: '🦓', translation: '斑马', example: 'Striped zebra.' },
+    { word: 'Horse', icon: '🐴', translation: '马', example: 'Strong horse.' },
+    { word: 'Cow', icon: '🐮', translation: '牛', example: 'Milk cow.' },
+    { word: 'Sheep', icon: '🐑', translation: '羊', example: 'Fluffy sheep.' },
+    { word: 'Chicken', icon: '🐔', translation: '鸡', example: 'Yellow chicken.' },
+    { word: 'Snake', icon: '🐍', translation: '蛇', example: 'Long snake.' },
+    { word: 'Frog', icon: '🐸', translation: '青蛙', example: 'Green frog.' },
+    { word: 'Bee', icon: '🐝', translation: '蜜蜂', example: 'Busy bee.' },
+    { word: 'Ant', icon: '🐜', translation: '蚂蚁', example: 'Small ant.' }
+  ],
+  vehicles: [
+    { word: 'Car', icon: '🚗', translation: '汽车', example: 'Red car.' },
+    { word: 'Bus', icon: '🚌', translation: '公交车', example: 'Big bus.' },
+    { word: 'Train', icon: '🚂', translation: '火车', example: 'Long train.' },
+    { word: 'Plane', icon: '✈️', translation: '飞机', example: 'Flying plane.' },
+    { word: 'Ship', icon: '🚢', translation: '轮船', example: 'Big ship.' },
+    { word: 'Bike', icon: '🚲', translation: '自行车', example: 'Ride bike.' },
+    { word: 'Motorcycle', icon: '🏍️', translation: '摩托车', example: 'Fast motorcycle.' },
+    { word: 'Taxi', icon: '🚕', translation: '出租车', example: 'Yellow taxi.' },
+    { word: 'Truck', icon: '🚛', translation: '卡车', example: 'Heavy truck.' },
+    { word: 'Ambulance', icon: '🚑', translation: '救护车', example: 'Emergency ambulance.' },
+    { word: 'Fire Truck', icon: '🚒', translation: '消防车', example: 'Fire truck.' },
+    { word: 'Police Car', icon: '🚓', translation: '警车', example: 'Police car.' },
+    { word: 'Helicopter', icon: '🚁', translation: '直升机', example: 'Flying helicopter.' },
+    { word: 'Subway', icon: '🚇', translation: '地铁', example: 'Underground subway.' },
+    { word: 'Boat', icon: '🚤', translation: '小船', example: 'Small boat.' },
+    { word: 'Tractor', icon: '🚜', translation: '拖拉机', example: 'Farm tractor.' }
+  ],
+  food: [
+    { word: 'Bread', icon: '🍞', translation: '面包', example: 'Fresh bread.' },
+    { word: 'Rice', icon: '🍚', translation: '米饭', example: 'White rice.' },
+    { word: 'Noodle', icon: '🍜', translation: '面条', example: 'Chinese noodles.' },
+    { word: 'Pizza', icon: '🍕', translation: '披萨', example: 'Delicious pizza.' },
+    { word: 'Hamburger', icon: '🍔', translation: '汉堡', example: 'Big hamburger.' },
+    { word: 'Hot Dog', icon: '🌭', translation: '热狗', example: 'Hot dog.' },
+    { word: 'French Fries', icon: '🍟', translation: '薯条', example: 'Crispy fries.' },
+    { word: 'Soup', icon: '🍲', translation: '汤', example: 'Hot soup.' },
+    { word: 'Salad', icon: '🥗', translation: '沙拉', example: 'Fresh salad.' },
+    { word: 'Ice Cream', icon: '🍦', translation: '冰淇淋', example: 'Cold ice cream.' },
+    { word: 'Cake', icon: '🍰', translation: '蛋糕', example: 'Sweet cake.' },
+    { word: 'Cookie', icon: '🍪', translation: '饼干', example: 'Chocolate cookie.' },
+    { word: 'Chocolate', icon: '🍫', translation: '巧克力', example: 'Dark chocolate.' },
+    { word: 'Candy', icon: '🍬', translation: '糖果', example: 'Sweet candy.' },
+    { word: 'Popcorn', icon: '🍿', translation: '爆米花', example: 'Salty popcorn.' },
+    { word: 'Cheese', icon: '🧀', translation: '奶酪', example: 'Yellow cheese.' },
+    { word: 'Egg', icon: '🥚', translation: '鸡蛋', example: 'Fresh egg.' },
+    { word: 'Meat', icon: '🥩', translation: '肉', example: 'Beef meat.' },
+    { word: 'Fish', icon: '🐟', translation: '鱼肉', example: 'Fresh fish.' },
+    { word: 'Vegetable', icon: '🥬', translation: '蔬菜', example: 'Green vegetable.' },
+    { word: 'Milk', icon: '🥛', translation: '牛奶', example: 'White milk.' },
+    { word: 'Juice', icon: '🧃', translation: '果汁', example: 'Fruit juice.' },
+    { word: 'Coffee', icon: '☕', translation: '咖啡', example: 'Hot coffee.' },
+    { word: 'Tea', icon: '🍵', translation: '茶', example: 'Green tea.' }
+  ],
+  daily: [
+    { word: 'House', icon: '🏠', translation: '房子', example: 'Big house.' },
+    { word: 'Bed', icon: '🛏️', translation: '床', example: 'Comfortable bed.' },
+    { word: 'Table', icon: '🪑', translation: '桌子', example: 'Wooden table.' },
+    { word: 'Chair', icon: '🪑', translation: '椅子', example: 'Soft chair.' },
+    { word: 'Sofa', icon: '🛋️', translation: '沙发', example: 'Comfortable sofa.' },
+    { word: 'TV', icon: '📺', translation: '电视', example: 'Big TV.' },
+    { word: 'Phone', icon: '📱', translation: '手机', example: 'Smart phone.' },
+    { word: 'Computer', icon: '💻', translation: '电脑', example: 'Laptop.' },
+    { word: 'Clock', icon: '🕐', translation: '时钟', example: 'Round clock.' },
+    { word: 'Lamp', icon: '🪔', translation: '灯', example: 'Bright lamp.' },
+    { word: 'Mirror', icon: '🪞', translation: '镜子', example: 'Clear mirror.' },
+    { word: 'Book', icon: '📚', translation: '书', example: 'Interesting book.' },
+    { word: 'Bag', icon: '👜', translation: '包', example: 'Leather bag.' },
+    { word: 'Shoe', icon: '👟', translation: '鞋子', example: 'Running shoe.' },
+    { word: 'Hat', icon: '🧢', translation: '帽子', example: 'Baseball hat.' },
+    { word: 'Sunglasses', icon: '🕶️', translation: '太阳镜', example: 'Cool sunglasses.' },
+    { word: 'Watch', icon: '⌚', translation: '手表', example: 'Nice watch.' },
+    { word: 'Umbrella', icon: '☂️', translation: '雨伞', example: 'Rainy umbrella.' },
+    { word: 'Key', icon: '🔑', translation: '钥匙', example: 'Silver key.' },
+    { word: 'Wallet', icon: '👛', translation: '钱包', example: 'Leather wallet.' },
+    { word: 'Toothbrush', icon: '🦷', translation: '牙刷', example: 'Soft toothbrush.' },
+    { word: 'Towel', icon: '🧺', translation: '毛巾', example: 'Soft towel.' },
+    { word: 'Pillow', icon: '🛌', translation: '枕头', example: 'Fluffy pillow.' },
+    { word: 'Blanket', icon: '🧶', translation: '毯子', example: 'Warm blanket.' }
+  ],
+  colors: [
+    { word: 'Red', icon: '🔴', translation: '红色', example: 'Red apple.' },
+    { word: 'Orange', icon: '🟠', translation: '橙色', example: 'Orange sunset.' },
+    { word: 'Yellow', icon: '🟡', translation: '黄色', example: 'Yellow sun.' },
+    { word: 'Green', icon: '🟢', translation: '绿色', example: 'Green grass.' },
+    { word: 'Blue', icon: '🔵', translation: '蓝色', example: 'Blue sky.' },
+    { word: 'Purple', icon: '🟣', translation: '紫色', example: 'Purple flower.' },
+    { word: 'Pink', icon: '💗', translation: '粉色', example: 'Pink dress.' },
+    { word: 'Brown', icon: '🤎', translation: '棕色', example: 'Brown bear.' },
+    { word: 'Black', icon: '⚫', translation: '黑色', example: 'Black cat.' },
+    { word: 'White', icon: '⚪', translation: '白色', example: 'White snow.' },
+    { word: 'Gray', icon: '⬜', translation: '灰色', example: 'Gray cloud.' },
+    { word: 'Gold', icon: '🥇', translation: '金色', example: 'Gold medal.' },
+    { word: 'Silver', icon: '🥈', translation: '银色', example: 'Silver moon.' },
+    { word: 'Rainbow', icon: '🌈', translation: '彩虹', example: 'Colorful rainbow.' }
+  ],
+  shapes: [
+    { word: 'Circle', icon: '⭕', translation: '圆形', example: 'Round circle.' },
+    { word: 'Square', icon: '⬜', translation: '正方形', example: 'Blue square.' },
+    { word: 'Triangle', icon: '🔺', translation: '三角形', example: 'Red triangle.' },
+    { word: 'Rectangle', icon: '📏', translation: '长方形', example: 'Long rectangle.' },
+    { word: 'Star', icon: '⭐', translation: '星形', example: 'Shining star.' },
+    { word: 'Heart', icon: '❤️', translation: '心形', example: 'Red heart.' },
+    { word: 'Diamond', icon: '💎', translation: '菱形', example: 'Shiny diamond.' },
+    { word: 'Oval', icon: '🥚', translation: '椭圆形', example: 'Egg oval.' },
+    { word: 'Cylinder', icon: '🔷', translation: '圆柱形', example: 'Can cylinder.' },
+    { word: 'Sphere', icon: '🔵', translation: '球形', example: 'Ball sphere.' },
+    { word: 'Cube', icon: '📦', translation: '立方体', example: 'Box cube.' },
+    { word: 'Cone', icon: '🍦', translation: '锥形', example: 'Ice cream cone.' }
+  ],
+  weather: [
+    { word: 'Sun', icon: '☀️', translation: '太阳', example: 'Bright sun.' },
+    { word: 'Cloud', icon: '☁️', translation: '云', example: 'White cloud.' },
+    { word: 'Rain', icon: '🌧️', translation: '雨', example: 'Heavy rain.' },
+    { word: 'Snow', icon: '❄️', translation: '雪', example: 'White snow.' },
+    { word: 'Wind', icon: '💨', translation: '风', example: 'Strong wind.' },
+    { word: 'Storm', icon: '⛈️', translation: '暴风雨', example: 'Big storm.' },
+    { word: 'Rainbow', icon: '🌈', translation: '彩虹', example: 'Beautiful rainbow.' },
+    { word: 'Thunder', icon: '🌩️', translation: '闪电', example: 'Bright lightning.' },
+    { word: 'Fog', icon: '🌫️', translation: '雾', example: 'Thick fog.' },
+    { word: 'Hot', icon: '🔥', translation: '热', example: 'Very hot.' },
+    { word: 'Cold', icon: '🥶', translation: '冷', example: 'Very cold.' },
+    { word: 'Warm', icon: '🌡️', translation: '温暖', example: 'Warm day.' },
+    { word: 'Cool', icon: '❄️', translation: '凉爽', example: 'Cool breeze.' },
+    { word: 'Hail', icon: '🧊', translation: '冰雹', example: 'Ice hail.' }
+  ],
+  school: [
+    { word: 'Book', icon: '📚', translation: '书', example: 'Read book.' },
+    { word: 'Pen', icon: '✏️', translation: '钢笔', example: 'Write with pen.' },
+    { word: 'Pencil', icon: '✏️', translation: '铅笔', example: 'Draw with pencil.' },
+    { word: 'Notebook', icon: '📒', translation: '笔记本', example: 'Write in notebook.' },
+    { word: 'Eraser', icon: '🧹', translation: '橡皮', example: 'Erase mistake.' },
+    { word: 'Ruler', icon: '📏', translation: '尺子', example: 'Measure with ruler.' },
+    { word: 'Crayon', icon: '🖍️', translation: '蜡笔', example: 'Color with crayon.' },
+    { word: 'Scissors', icon: '✂️', translation: '剪刀', example: 'Cut with scissors.' },
+    { word: 'Glue', icon: '🧴', translation: '胶水', example: 'Stick with glue.' },
+    { word: 'Bag', icon: '🎒', translation: '书包', example: 'School bag.' },
+    { word: 'Desk', icon: '🖥️', translation: '课桌', example: 'School desk.' },
+    { word: 'Chair', icon: '🪑', translation: '椅子', example: 'Class chair.' },
+    { word: 'Whiteboard', icon: '📋', translation: '白板', example: 'Write on board.' },
+    { word: 'Marker', icon: '🖍️', translation: '马克笔', example: 'Color marker.' },
+    { word: 'Calculator', icon: '🧮', translation: '计算器', example: 'Math calculator.' },
+    { word: 'Backpack', icon: '🎒', translation: '背包', example: 'Hiking backpack.' }
   ],
   family: [
     { word: 'Father', icon: '👨', translation: '爸爸', example: 'My father.' },
     { word: 'Mother', icon: '👩', translation: '妈妈', example: 'My mother.' },
     { word: 'Brother', icon: '👦', translation: '哥哥', example: 'Big brother.' },
     { word: 'Sister', icon: '👧', translation: '姐姐', example: 'Little sister.' },
+    { word: 'Son', icon: '👦', translation: '儿子', example: 'Little son.' },
+    { word: 'Daughter', icon: '👧', translation: '女儿', example: 'Cute daughter.' },
     { word: 'Grandpa', icon: '👴', translation: '爷爷', example: 'Dear grandpa.' },
     { word: 'Grandma', icon: '👵', translation: '奶奶', example: 'Kind grandma.' },
+    { word: 'Uncle', icon: '👨', translation: '叔叔', example: 'Nice uncle.' },
+    { word: 'Aunt', icon: '👩', translation: '阿姨', example: 'Pretty aunt.' },
+    { word: 'Cousin', icon: '👦', translation: '堂兄', example: 'Playful cousin.' },
     { word: 'Family', icon: '👨‍👩‍👧‍👦', translation: '家庭', example: 'Happy family.' },
-    { word: 'Home', icon: '🏠', translation: '家', example: 'Go home.' }
-  ],
-  numbers: [
-    { word: 'One', icon: '1️⃣', translation: '一', example: 'Number one.' },
-    { word: 'Two', icon: '2️⃣', translation: '二', example: 'Number two.' },
-    { word: 'Three', icon: '3️⃣', translation: '三', example: 'Number three.' },
-    { word: 'Four', icon: '4️⃣', translation: '四', example: 'Number four.' },
-    { word: 'Five', icon: '5️⃣', translation: '五', example: 'Number five.' },
-    { word: 'Six', icon: '6️⃣', translation: '六', example: 'Number six.' },
-    { word: 'Seven', icon: '7️⃣', translation: '七', example: 'Number seven.' },
-    { word: 'Eight', icon: '8️⃣', translation: '八', example: 'Number eight.' }
+    { word: 'Home', icon: '🏠', translation: '家', example: 'Go home.' },
+    { word: 'Love', icon: '❤️', translation: '爱', example: 'I love you.' }
   ]
 };
+
+const config = {
+  category: 'fruits',
+  count: 16
+};
+
+const grid = document.getElementById('grid');
+const subtitle = document.getElementById('subtitle');
+const modal = document.getElementById('configModal');
+const openConfig = document.getElementById('openConfig');
+const closeConfig = document.getElementById('closeConfig');
+const cancelConfig = document.getElementById('cancelConfig');
+const applyConfig = document.getElementById('applyConfig');
+const categorySelect = document.getElementById('categorySelect');
+const countSelect = document.getElementById('countSelect');
 
 function shuffle(array) {
   return array.slice().sort(() => Math.random() - 0.5);
 }
 
+function speak(word) {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(word);
+    utterance.lang = 'en-US';
+    utterance.rate = 0.8;
+    utterance.pitch = 1;
+    window.speechSynthesis.speak(utterance);
+  }
+}
+
 function createGrid() {
-  const grid = document.getElementById('grid');
+  let pool;
+  
+  if (config.category === 'all') {
+    pool = [];
+    Object.keys(wordData).forEach(key => {
+      pool = pool.concat(wordData[key]);
+    });
+  } else {
+    pool = wordData[config.category] || wordData.fruits;
+  }
+  
+  const shuffled = shuffle(pool);
   grid.innerHTML = '';
-  
-  const allWords = [
-    ...wordData.fruits,
-    ...wordData.animals,
-    ...wordData.family,
-    ...wordData.numbers
-  ];
-  
-  const shuffled = shuffle(allWords).slice(0, 28);
-  
-  shuffled.forEach((item, index) => {
+  const items = Array.from({ length: config.count }, (_, i) => shuffled[i % shuffled.length]);
+
+  items.forEach((item, index) => {
     const card = document.createElement('div');
     card.className = 'card';
+    card.dataset.word = item.word;
     card.innerHTML = `
       <div class="num-badge">${index + 1}</div>
       <div class="word-icon">${item.icon}</div>
@@ -401,10 +677,67 @@ function createGrid() {
       <div class="translation">${item.translation}</div>
       <div class="example">${item.example}</div>
     `;
+    
+    card.addEventListener('click', () => {
+      card.classList.add('active');
+      speak(item.word);
+      setTimeout(() => card.classList.remove('active'), 500);
+    });
+    
     grid.appendChild(card);
   });
 }
 
+function updateSubtitle() {
+  const categoryNames = {
+    fruits: '水果类',
+    animals: '动物类',
+    vehicles: '交通工具',
+    food: '食物类',
+    daily: '生活用品',
+    colors: '颜色',
+    shapes: '形状',
+    weather: '天气',
+    school: '学习用品',
+    family: '家庭成员',
+    all: '全部类别'
+  };
+  subtitle.textContent = `英语单词 · ${categoryNames[config.category]} · 共${config.count} 个单词`;
+}
+
+function syncConfigUI() {
+  categorySelect.value = config.category;
+  countSelect.value = String(config.count);
+}
+
+function openModal() {
+  syncConfigUI();
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+}
+
+function closeModal() {
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+}
+
+function applySettings() {
+  config.category = categorySelect.value;
+  config.count = Number(countSelect.value);
+  updateSubtitle();
+  createGrid();
+  closeModal();
+}
+
+openConfig.addEventListener('click', openModal);
+closeConfig.addEventListener('click', closeModal);
+cancelConfig.addEventListener('click', closeModal);
+modal.addEventListener('click', (event) => {
+  if (event.target === modal) closeModal();
+});
+applyConfig.addEventListener('click', applySettings);
+
+updateSubtitle();
 createGrid();
 </script>
 </body>
