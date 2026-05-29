@@ -128,6 +128,11 @@
     border-color: var(--c7);
   }
 
+  .choice-card.susuan {
+    background: linear-gradient(135deg, #FFF3F3 0%, #FFFBEA 100%);
+    border-color: var(--c2);
+  }
+
   .choice-emoji {
     font-size: 36px;
     display: block;
@@ -145,6 +150,7 @@
   .choice-card.english .choice-emoji { animation-delay: 0.4s; }
   .choice-card.history .choice-emoji { animation-delay: 0.6s; }
   .choice-card.science .choice-emoji { animation-delay: 0.8s; }
+  .choice-card.susuan .choice-emoji { animation-delay: 1.0s; }
 
   .choice-title {
     font-family: 'Fredoka One', cursive;
@@ -213,9 +219,15 @@
     </a>
 
     <a href="kexue.html" class="choice-card science" style="display: none;">
-      <span class="choice-emoji">�</span>
+      <span class="choice-emoji">🔬</span>
       <div class="choice-title">科学探索</div>
       <div class="choice-desc">自然奥秘<br>科学实验</div>
+    </a>
+
+    <a href="susuan.html" class="choice-card susuan">
+      <span class="choice-emoji">⚡</span>
+      <div class="choice-title">速算练习</div>
+      <div class="choice-desc">凑十破十<br>思维训练</div>
     </a>
   </div>
 

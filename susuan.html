@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>速算练习 🌈</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --c1: #FF6B6B; --c2: #FFD93D; --c3: #6BCB77; --c4: #4D96FF;
+    --c5: #FF922B; --c6: #CC5DE8; --c7: #20C997; --c8: #F06595;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #fff9f0 0%, #fff0f6 50%, #f0f9ff 100%);
+    min-height: 100vh;
+    padding: 10px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background:
+      radial-gradient(circle at 10% 15%, rgba(255,107,107,.12) 0%, transparent 35%),
+      radial-gradient(circle at 90% 10%, rgba(77,150,255,.12) 0%, transparent 35%),
+      radial-gradient(circle at 80% 85%, rgba(107,203,119,.12) 0%, transparent 35%),
+      radial-gradient(circle at 15% 80%, rgba(255,217,61,.15) 0%, transparent 35%);
+  }
+
+  .page {
+    position: relative; z-index: 1;
+    max-width: 740px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 24px;
+    padding: 28px 32px 24px;
+    box-shadow:
+      0 0 0 6px #fff,
+      0 0 0 10px var(--c4),
+      0 8px 40px rgba(0,0,0,.10);
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 18px;
+    position: relative;
+  }
+
+  .stars-row {
+    font-size: 22px;
+    letter-spacing: 4px;
+    margin-bottom: 4px;
+    animation: twinkle 2s infinite alternate;
+  }
+  @keyframes twinkle { from{opacity:.7} to{opacity:1} }
+
+  .title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 32px;
+    background: linear-gradient(90deg, var(--c1), var(--c5), var(--c2), var(--c3), var(--c4), var(--c6));
+    background-size: 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: rainbow 4s linear infinite;
+    line-height: 1.2;
+  }
+  @keyframes rainbow { 0%{background-position:0%} 100%{background-position:200%} }
+
+  .subtitle-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    color: #888;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  .config-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--c4), var(--c6));
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .config-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(77,150,255,.4);
+  }
+
+  .hint-text {
+    font-size: 12px;
+    color: var(--c4);
+    margin-top: 8px;
+    font-weight: 600;
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0 18px;
+    gap: 10px;
+  }
+
+  .info-box {
+    flex: 1;
+    border-radius: 12px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .info-box.name  { background: linear-gradient(135deg, var(--c1), var(--c5)); }
+  .info-box.date  { background: linear-gradient(135deg, var(--c4), var(--c6)); }
+  .info-box.score { background: linear-gradient(135deg, var(--c3), var(--c7)); }
+
+  .info-box span { font-size: 16px; }
+
+  .info-line {
+    flex: 1;
+    border-bottom: 2px dotted rgba(255,255,255,.7);
+    min-width: 60px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .card {
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 3px solid transparent;
+    transition: transform .2s, box-shadow .2s;
+    cursor: pointer;
+  }
+  .card:hover { 
+    transform: scale(1.02);
+    box-shadow: 0 6px 16px rgba(0,0,0,.1);
+  }
+  .card.active {
+    box-shadow: 0 0 0 3px var(--c4), 0 6px 20px rgba(77,150,255,.3);
+  }
+
+  .card:nth-child(8n+1)  { background: #FFF3F3; border-color: var(--c1); }
+  .card:nth-child(8n+2)  { background: #FFFBEA; border-color: var(--c2); }
+  .card:nth-child(8n+3)  { background: #F3FFF5; border-color: var(--c3); }
+  .card:nth-child(8n+4)  { background: #F0F5FF; border-color: var(--c4); }
+  .card:nth-child(8n+5)  { background: #FFF5EE; border-color: var(--c5); }
+  .card:nth-child(8n+6)  { background: #FCF0FF; border-color: var(--c6); }
+  .card:nth-child(8n+7)  { background: #EDFFF8; border-color: var(--c7); }
+  .card:nth-child(8n+0)  { background: #FFF0F5; border-color: var(--c8); }
+
+  .num-badge {
+    position: absolute; top: 8px; left: 10px;
+    font-size: 10px; font-weight: 900;
+    color: white;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card:nth-child(8n+1) .num-badge { background: var(--c1); }
+  .card:nth-child(8n+2) .num-badge { background: var(--c2); color:#333; }
+  .card:nth-child(8n+3) .num-badge { background: var(--c3); }
+  .card:nth-child(8n+4) .num-badge { background: var(--c4); }
+  .card:nth-child(8n+5) .num-badge { background: var(--c5); }
+  .card:nth-child(8n+6) .num-badge { background: var(--c6); }
+  .card:nth-child(8n+7) .num-badge { background: var(--c7); }
+  .card:nth-child(8n+0) .num-badge { background: var(--c8); }
+
+  .method-tag {
+    position: absolute; top: 8px; right: 10px;
+    font-size: 10px; font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+    color: white;
+  }
+  .method-cs { background: linear-gradient(135deg, #FF6B6B, #FF922B); }
+  .method-ps { background: linear-gradient(135deg, #4D96FF, #CC5DE8); }
+  .method-psh { background: linear-gradient(135deg, #6BCB77, #20C997); }
+  .method-js { background: linear-gradient(135deg, #FFD93D, #FF922B); }
+
+  .equation {
+    font-family: 'Fredoka One', cursive;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .equation .result-box {
+    width: 40px;
+    height: 40px;
+    border: 3px dashed var(--c4);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: var(--c4);
+  }
+
+  .equation .result-box.filled {
+    border-style: solid;
+    background: rgba(77,150,255,.1);
+  }
+
+  .tree-diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .tree-top {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+  }
+
+  .tree-top .num {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    background: var(--c1);
+  }
+
+  .tree-top .num.special {
+    background: linear-gradient(135deg, #FF6B6B, #FF922B);
+    border: 2px solid #fff;
+    box-shadow: 0 2px 8px rgba(255,107,107,.4);
+  }
+
+  .tree-top .num.gap {
+    visibility: hidden;
+  }
+
+  .tree-lines {
+    width: 80px;
+    height: 24px;
+    position: relative;
+  }
+
+  .tree-lines svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .tree-bottom {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+  }
+
+  .tree-bottom .num {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    background: var(--c4);
+  }
+
+  .tree-bottom .num.ten {
+    background: linear-gradient(135deg, #FFD93D, #FF922B);
+    color: #333;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 8px rgba(255,217,61,.4);
+  }
+
+  .tree-bottom .num.guess {
+    border: 3px dashed var(--c5);
+    background: transparent;
+    color: var(--c5);
+    font-size: 18px;
+  }
+
+  .hint-area {
+    font-size: 12px;
+    color: #666;
+    padding: 8px 12px;
+    background: rgba(77,150,255,.05);
+    border-radius: 8px;
+    display: none;
+  }
+
+  .hint-area.show {
+    display: block;
+  }
+
+  .hint-area .hint-title {
+    font-weight: 700;
+    color: var(--c4);
+    margin-bottom: 4px;
+  }
+
+  .steps {
+    text-align: left;
+    line-height: 1.6;
+  }
+
+  .reveal-btn {
+    margin-top: 10px;
+    padding: 6px 16px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--c3), var(--c7));
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 18px;
+    letter-spacing: 6px;
+  }
+
+  .footer-msg {
+    font-family: 'Fredoka One', cursive;
+    font-size: 14px;
+    margin-top: 6px;
+    background: linear-gradient(90deg, var(--c1), var(--c4), var(--c3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.35);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    z-index: 100;
+  }
+
+  .modal.open { display: flex; }
+
+  .modal-content {
+    width: min(520px, 100%);
+    background: white;
+    border-radius: 22px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.18);
+    overflow: hidden;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 22px;
+    font-size: 18px;
+    font-weight: 800;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .close-btn {
+    border: none;
+    background: transparent;
+    font-size: 22px;
+    cursor: pointer;
+    color: #666;
+  }
+
+  .modal-body {
+    display: grid;
+    gap: 14px;
+    padding: 20px 22px;
+  }
+
+  .field {
+    display: grid;
+    gap: 6px;
+    font-size: 14px;
+  }
+
+  .field label {
+    font-weight: 700;
+  }
+
+  .field select {
+    width: 100%;
+    border-radius: 999px;
+    border: 1px solid #ddd;
+    padding: 10px 14px;
+    font-size: 14px;
+    outline: none;
+  }
+
+  .field input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+  }
+
+  .field .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 22px 22px;
+    background: #f9fbff;
+  }
+
+  .modal-actions button {
+    border: none;
+    border-radius: 999px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  #cancelConfig {
+    background: #f0f0f5;
+    color: #575767;
+  }
+
+  #applyConfig {
+    background: linear-gradient(135deg, var(--c3), var(--c7));
+    color: white;
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    body::before { display: none; }
+    .page {
+      box-shadow: none;
+      border-radius: 0;
+      max-width: 100%;
+      padding: 18px 20px;
+    }
+    .card:hover { transform: none; }
+    .title { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .card  { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .info-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .num-badge { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .config-btn, .modal, .reveal-btn { display: none; }
+    .hint-area { display: block; }
+    @page { size: A4; margin: 10mm 12mm; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="stars-row">🌟🧮✨💡🧠🎊</div>
+    <div class="title">⚡ 速算练习 ⚡</div>
+    <div class="subtitle-row">
+      <div class="subtitle" id="subtitle">凑十法 · 破十法 · 平十法 · 借十法</div>
+      <button class="config-btn" id="openConfig" aria-label="配置">⚙️</button>
+    </div>
+    <div class="hint-text">👆 点击卡片查看答案和解题步骤</div>
+  </div>
+
+  <div class="info-row">
+    <div class="info-box name">
+      <span>😊</span> 姓名：<div class="info-line"></div>
+    </div>
+    <div class="info-box date">
+      <span>📅</span> 日期：<div class="info-line"></div>
+    </div>
+    <div class="info-box score">
+      <span>🏅</span> 得分：<div class="info-line"></div>
+    </div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="footer">123456789</div>
+  <div class="footer-msg">速算练习，思维训练！🌟🎊</div>
+</div>
+
+<div id="configModal" class="modal" aria-hidden="true">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div>速算练习配置</div>
+      <button class="close-btn" id="closeConfig">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>选择速算方法</label>
+        <select id="methodSelect">
+          <option value="random">🎲 随机混合</option>
+          <option value="cs">🧩 凑十法 (加法)</option>
+          <option value="ps">💥 破十法 (减法)</option>
+          <option value="psh">⚖️ 平十法 (减法)</option>
+          <option value="js">🔄 借十法 (减法)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>卡片数量</label>
+        <select id="countSelect">
+          <option value="4">4 张</option>
+          <option value="6">6 张</option>
+          <option value="8">8 张</option>
+          <option value="10">10 张</option>
+          <option value="12">12 张</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="checkbox-label">
+          <input type="checkbox" id="showHint" checked>
+          <span>显示解题提示</span>
+        </label>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button id="cancelConfig">取消</button>
+      <button id="applyConfig">应用</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function generateSuansuanData(method, count) {
+  const data = [];
+  
+  const csProblems = [
+    { a: 9, b: 6, method: 'cs', steps: ['拆小数：6 = 1 + 5', '凑成十：9 + 1 = 10', '加剩数：10 + 5 = 15'], answer: 15, split1: 1, split2: 5 },
+    { a: 7, b: 4, method: 'cs', steps: ['拆小数：4 = 3 + 1', '凑成十：7 + 3 = 10', '加剩数：10 + 1 = 11'], answer: 11, split1: 3, split2: 1 },
+    { a: 8, b: 5, method: 'cs', steps: ['拆小数：5 = 2 + 3', '凑成十：8 + 2 = 10', '加剩数：10 + 3 = 13'], answer: 13, split1: 2, split2: 3 },
+    { a: 9, b: 4, method: 'cs', steps: ['拆小数：4 = 1 + 3', '凑成十：9 + 1 = 10', '加剩数：10 + 3 = 13'], answer: 13, split1: 1, split2: 3 },
+    { a: 8, b: 4, method: 'cs', steps: ['拆小数：4 = 2 + 2', '凑成十：8 + 2 = 10', '加剩数：10 + 2 = 12'], answer: 12, split1: 2, split2: 2 },
+    { a: 7, b: 5, method: 'cs', steps: ['拆小数：5 = 3 + 2', '凑成十：7 + 3 = 10', '加剩数：10 + 2 = 12'], answer: 12, split1: 3, split2: 2 },
+    { a: 6, b: 5, method: 'cs', steps: ['拆小数：5 = 4 + 1', '凑成十：6 + 4 = 10', '加剩数：10 + 1 = 11'], answer: 11, split1: 4, split2: 1 },
+    { a: 9, b: 3, method: 'cs', steps: ['拆小数：3 = 1 + 2', '凑成十：9 + 1 = 10', '加剩数：10 + 2 = 12'], answer: 12, split1: 1, split2: 2 },
+    { a: 8, b: 6, method: 'cs', steps: ['拆小数：6 = 2 + 4', '凑成十：8 + 2 = 10', '加剩数：10 + 4 = 14'], answer: 14, split1: 2, split2: 4 },
+    { a: 7, b: 6, method: 'cs', steps: ['拆小数：6 = 3 + 3', '凑成十：7 + 3 = 10', '加剩数：10 + 3 = 13'], answer: 13, split1: 3, split2: 3 },
+    { a: 9, b: 7, method: 'cs', steps: ['拆小数：7 = 1 + 6', '凑成十：9 + 1 = 10', '加剩数：10 + 6 = 16'], answer: 16, split1: 1, split2: 6 },
+    { a: 8, b: 7, method: 'cs', steps: ['拆小数：7 = 2 + 5', '凑成十：8 + 2 = 10', '加剩数：10 + 5 = 15'], answer: 15, split1: 2, split2: 5 },
+  ];
+
+  const psProblems = [
+    { a: 17, b: 8, method: 'ps', steps: ['拆大数：17 = 7 + 10', '减小数：10 - 8 = 2', '加剩数：7 + 2 = 9'], answer: 9, split1: 7, split2: 10 },
+    { a: 12, b: 7, method: 'ps', steps: ['拆大数：12 = 2 + 10', '减小数：10 - 7 = 3', '加剩数：2 + 3 = 5'], answer: 5, split1: 2, split2: 10 },
+    { a: 15, b: 8, method: 'ps', steps: ['拆大数：15 = 5 + 10', '减小数：10 - 8 = 2', '加剩数：5 + 2 = 7'], answer: 7, split1: 5, split2: 10 },
+    { a: 13, b: 5, method: 'ps', steps: ['拆大数：13 = 3 + 10', '减小数：10 - 5 = 5', '加剩数：3 + 5 = 8'], answer: 8, split1: 3, split2: 10 },
+    { a: 16, b: 8, method: 'ps', steps: ['拆大数：16 = 6 + 10', '减小数：10 - 8 = 2', '加剩数：6 + 2 = 8'], answer: 8, split1: 6, split2: 10 },
+    { a: 12, b: 9, method: 'ps', steps: ['拆大数：12 = 2 + 10', '减小数：10 - 9 = 1', '加剩数：2 + 1 = 3'], answer: 3, split1: 2, split2: 10 },
+    { a: 14, b: 6, method: 'ps', steps: ['拆大数：14 = 4 + 10', '减小数：10 - 6 = 4', '加剩数：4 + 4 = 8'], answer: 8, split1: 4, split2: 10 },
+    { a: 11, b: 7, method: 'ps', steps: ['拆大数：11 = 1 + 10', '减小数：10 - 7 = 3', '加剩数：1 + 3 = 4'], answer: 4, split1: 1, split2: 10 },
+    { a: 18, b: 9, method: 'ps', steps: ['拆大数：18 = 8 + 10', '减小数：10 - 9 = 1', '加剩数：8 + 1 = 9'], answer: 9, split1: 8, split2: 10 },
+    { a: 19, b: 7, method: 'ps', steps: ['拆大数：19 = 9 + 10', '减小数：10 - 7 = 3', '加剩数：9 + 3 = 12'], answer: 12, split1: 9, split2: 10 },
+    { a: 13, b: 9, method: 'ps', steps: ['拆大数：13 = 3 + 10', '减小数：10 - 9 = 1', '加剩数：3 + 1 = 4'], answer: 4, split1: 3, split2: 10 },
+    { a: 11, b: 8, method: 'ps', steps: ['拆大数：11 = 1 + 10', '减小数：10 - 8 = 2', '加剩数：1 + 2 = 3'], answer: 3, split1: 1, split2: 10 },
+  ];
+
+  const pshProblems = [
+    { a: 13, b: 8, method: 'psh', steps: ['拆小数：8 = 3 + 5', '要相减：13 - 3 = 10', '算得数：10 - 5 = 5'], answer: 5, split1: 3, split2: 5 },
+    { a: 14, b: 5, method: 'psh', steps: ['拆小数：5 = 4 + 1', '要相减：14 - 4 = 10', '算得数：10 - 1 = 9'], answer: 9, split1: 4, split2: 1 },
+    { a: 11, b: 8, method: 'psh', steps: ['拆小数：8 = 1 + 7', '要相减：11 - 1 = 10', '算得数：10 - 7 = 3'], answer: 3, split1: 1, split2: 7 },
+    { a: 17, b: 9, method: 'psh', steps: ['拆小数：9 = 7 + 2', '要相减：17 - 7 = 10', '算得数：10 - 2 = 8'], answer: 8, split1: 7, split2: 2 },
+    { a: 15, b: 8, method: 'psh', steps: ['拆小数：8 = 5 + 3', '要相减：15 - 5 = 10', '算得数：10 - 3 = 7'], answer: 7, split1: 5, split2: 3 },
+    { a: 16, b: 7, method: 'psh', steps: ['拆小数：7 = 6 + 1', '要相减：16 - 6 = 10', '算得数：10 - 1 = 9'], answer: 9, split1: 6, split2: 1 },
+    { a: 12, b: 6, method: 'psh', steps: ['拆小数：6 = 2 + 4', '要相减：12 - 2 = 10', '算得数：10 - 4 = 6'], answer: 6, split1: 2, split2: 4 },
+    { a: 18, b: 9, method: 'psh', steps: ['拆小数：9 = 8 + 1', '要相减：18 - 8 = 10', '算得数：10 - 1 = 9'], answer: 9, split1: 8, split2: 1 },
+    { a: 14, b: 7, method: 'psh', steps: ['拆小数：7 = 4 + 3', '要相减：14 - 4 = 10', '算得数：10 - 3 = 7'], answer: 7, split1: 4, split2: 3 },
+    { a: 19, b: 6, method: 'psh', steps: ['拆小数：6 = 9 + (-3)', '要相减：19 - 9 = 10', '算得数：10 - (-3) = 13'], answer: 13, split1: 9, split2: -3 },
+    { a: 12, b: 5, method: 'psh', steps: ['拆小数：5 = 2 + 3', '要相减：12 - 2 = 10', '算得数：10 - 3 = 7'], answer: 7, split1: 2, split2: 3 },
+    { a: 16, b: 9, method: 'psh', steps: ['拆小数：9 = 6 + 3', '要相减：16 - 6 = 10', '算得数：10 - 3 = 7'], answer: 7, split1: 6, split2: 3 },
+  ];
+
+  const jsProblems = [
+    { a: 33, b: 8, method: 'js', steps: ['拆大数：33 = 23 + 10', '借出十：10 - 8 = 2', '加剩数：23 + 2 = 25'], answer: 25, split1: 23, split2: 10 },
+    { a: 21, b: 5, method: 'js', steps: ['拆大数：21 = 11 + 10', '借出十：10 - 5 = 5', '加剩数：11 + 5 = 16'], answer: 16, split1: 11, split2: 10 },
+    { a: 25, b: 9, method: 'js', steps: ['拆大数：25 = 15 + 10', '借出十：10 - 9 = 1', '加剩数：15 + 1 = 16'], answer: 16, split1: 15, split2: 10 },
+    { a: 32, b: 4, method: 'js', steps: ['拆大数：32 = 22 + 10', '借出十：10 - 4 = 6', '加剩数：22 + 6 = 28'], answer: 28, split1: 22, split2: 10 },
+    { a: 41, b: 7, method: 'js', steps: ['拆大数：41 = 31 + 10', '借出十：10 - 7 = 3', '加剩数：31 + 3 = 34'], answer: 34, split1: 31, split2: 10 },
+    { a: 56, b: 8, method: 'js', steps: ['拆大数：56 = 46 + 10', '借出十：10 - 8 = 2', '加剩数：46 + 2 = 48'], answer: 48, split1: 46, split2: 10 },
+    { a: 66, b: 9, method: 'js', steps: ['拆大数：66 = 56 + 10', '借出十：10 - 9 = 1', '加剩数：56 + 1 = 57'], answer: 57, split1: 56, split2: 10 },
+    { a: 73, b: 9, method: 'js', steps: ['拆大数：73 = 63 + 10', '借出十：10 - 9 = 1', '加剩数：63 + 1 = 64'], answer: 64, split1: 63, split2: 10 },
+    { a: 45, b: 6, method: 'js', steps: ['拆大数：45 = 35 + 10', '借出十：10 - 6 = 4', '加剩数：35 + 4 = 39'], answer: 39, split1: 35, split2: 10 },
+    { a: 52, b: 7, method: 'js', steps: ['拆大数：52 = 42 + 10', '借出十：10 - 7 = 3', '加剩数：42 + 3 = 45'], answer: 45, split1: 42, split2: 10 },
+    { a: 27, b: 8, method: 'js', steps: ['拆大数：27 = 17 + 10', '借出十：10 - 8 = 2', '加剩数：17 + 2 = 19'], answer: 19, split1: 17, split2: 10 },
+    { a: 84, b: 5, method: 'js', steps: ['拆大数：84 = 74 + 10', '借出十：10 - 5 = 5', '加剩数：74 + 5 = 79'], answer: 79, split1: 74, split2: 10 },
+  ];
+
+  let pool;
+  if (method === 'random') {
+    pool = [...csProblems, ...psProblems, ...pshProblems, ...jsProblems];
+  } else if (method === 'cs') {
+    pool = csProblems;
+  } else if (method === 'ps') {
+    pool = psProblems;
+  } else if (method === 'psh') {
+    pool = pshProblems;
+  } else if (method === 'js') {
+    pool = jsProblems;
+  } else {
+    pool = [...csProblems, ...psProblems, ...pshProblems, ...jsProblems];
+  }
+
+  const shuffled = pool.slice().sort(() => Math.random() - 0.5);
+  return Array.from({ length: count }, (_, i) => shuffled[i % shuffled.length]);
+}
+
+const config = {
+  method: 'random',
+  count: 8,
+  showHint: true
+};
+
+const grid = document.getElementById('grid');
+const subtitle = document.getElementById('subtitle');
+const modal = document.getElementById('configModal');
+
+function shuffle(array) {
+  return array.slice().sort(() => Math.random() - 0.5);
+}
+
+function getMethodName(method) {
+  const names = {
+    cs: '凑十法',
+    ps: '破十法',
+    psh: '平十法',
+    js: '借十法',
+    random: '随机混合'
+  };
+  return names[method] || '速算练习';
+}
+
+function getMethodTag(method) {
+  const tags = {
+    cs: { text: '凑十法', class: 'method-cs' },
+    ps: { text: '破十法', class: 'method-ps' },
+    psh: { text: '平十法', class: 'method-psh' },
+    js: { text: '借十法', class: 'method-js' }
+  };
+  return tags[method] || { text: '练习', class: 'method-cs' };
+}
+
+function getLinesSVG(method) {
+  if (method === 'cs') {
+    return `<svg viewBox="0 0 80 24">
+      <line x1="40" y1="0" x2="15" y2="24" stroke="#FF6B6B" stroke-width="2"/>
+      <line x1="40" y1="0" x2="65" y2="24" stroke="#FF6B6B" stroke-width="2"/>
+      <line x1="65" y1="24" x2="65" y2="10" stroke="#6BCB77" stroke-width="2"/>
+      <line x1="65" y1="10" x2="40" y2="10" stroke="#6BCB77" stroke-width="2" stroke-dasharray="4"/>
+    </svg>`;
+  } else if (method === 'ps' || method === 'js') {
+    return `<svg viewBox="0 0 80 24">
+      <line x1="20" y1="0" x2="5" y2="24" stroke="#4D96FF" stroke-width="2"/>
+      <line x1="20" y1="0" x2="35" y2="24" stroke="#4D96FF" stroke-width="2"/>
+      <line x1="5" y1="24" x2="5" y2="12" stroke="#FFD93D" stroke-width="2"/>
+      <line x1="5" y1="12" x2="35" y2="12" stroke="#FFD93D" stroke-width="2" stroke-dasharray="4"/>
+    </svg>`;
+  } else {
+    return `<svg viewBox="0 0 80 24">
+      <line x1="40" y1="0" x2="15" y2="24" stroke="#6BCB77" stroke-width="2"/>
+      <line x1="40" y1="0" x2="65" y2="24" stroke="#6BCB77" stroke-width="2"/>
+      <line x1="15" y1="24" x2="15" y2="10" stroke="#FF6B6B" stroke-width="2"/>
+      <line x1="15" y1="10" x2="40" y2="10" stroke="#FF6B6B" stroke-width="2" stroke-dasharray="4"/>
+    </svg>`;
+  }
+}
+
+function createGrid() {
+  const data = generateSuansuanData(config.method, config.count);
+  grid.innerHTML = '';
+
+  data.forEach((item, index) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    const methodTag = getMethodTag(item.method);
+    
+    card.innerHTML = `
+      <div class="num-badge">${index + 1}</div>
+      <div class="method-tag ${methodTag.class}">${methodTag.text}</div>
+      <div class="equation">
+        ${item.a} ${item.method === 'cs' ? '+' : '-'} ${item.b} = 
+        <div class="result-box" id="result-${index}">?</div>
+      </div>
+      <div class="tree-diagram">
+        <div class="tree-top">
+          <div class="num ${item.method !== 'cs' ? 'special' : ''}">${item.a}</div>
+          <div class="num gap">${item.b}</div>
+        </div>
+        <div class="tree-lines">${getLinesSVG(item.method)}</div>
+        <div class="tree-bottom">
+          <div class="num">${item.split1}</div>
+          <div class="num ten">10</div>
+        </div>
+      </div>
+      <div class="hint-area ${config.showHint ? 'show' : ''}" id="hint-${index}">
+        <div class="hint-title">📝 解题步骤</div>
+        <div class="steps">
+          ${item.steps.map((step, i) => `<div>${i + 1}. ${step}</div>`).join('')}
+        </div>
+      </div>
+    `;
+
+    card.addEventListener('click', () => {
+      card.classList.add('active');
+      const resultBox = document.getElementById(`result-${index}`);
+      resultBox.textContent = item.answer;
+      resultBox.classList.add('filled');
+      const hintArea = document.getElementById(`hint-${index}`);
+      hintArea.classList.add('show');
+      setTimeout(() => card.classList.remove('active'), 500);
+    });
+
+    grid.appendChild(card);
+  });
+}
+
+function updateSubtitle() {
+  subtitle.textContent = `${getMethodName(config.method)} · 共${config.count} 道题`;
+}
+
+function syncConfigUI() {
+  document.getElementById('methodSelect').value = config.method;
+  document.getElementById('countSelect').value = String(config.count);
+  document.getElementById('showHint').checked = config.showHint;
+}
+
+function openModal() {
+  syncConfigUI();
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+}
+
+function closeModal() {
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+}
+
+function applySettings() {
+  config.method = document.getElementById('methodSelect').value;
+  config.count = Number(document.getElementById('countSelect').value);
+  config.showHint = document.getElementById('showHint').checked;
+  updateSubtitle();
+  createGrid();
+  closeModal();
+}
+
+document.getElementById('openConfig').addEventListener('click', openModal);
+document.getElementById('closeConfig').addEventListener('click', closeModal);
+document.getElementById('cancelConfig').addEventListener('click', closeModal);
+modal.addEventListener('click', (event) => {
+  if (event.target === modal) closeModal();
+});
+document.getElementById('applyConfig').addEventListener('click', applySettings);
+
+updateSubtitle();
+createGrid();
+</script>
+</body>
+</html>
