@@ -70,12 +70,38 @@
   }
   @keyframes rainbow { 0%{background-position:0%} 100%{background-position:200%} }
 
+  .subtitle-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
   .subtitle {
     font-size: 13px;
     color: #888;
-    margin-top: 4px;
     font-weight: 700;
     letter-spacing: 1px;
+  }
+
+  .config-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--c4), var(--c6));
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .config-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(77,150,255,.4);
   }
 
   .info-row {
@@ -122,9 +148,17 @@
     position: relative;
     overflow: hidden;
     border: 3px solid transparent;
-    transition: transform .2s;
+    transition: transform .2s, box-shadow .2s;
+    cursor: pointer;
   }
-  .card:hover { transform: scale(1.04); }
+  .card:hover { 
+    transform: scale(1.04);
+    box-shadow: 0 6px 16px rgba(0,0,0,.1);
+  }
+  .card.active {
+    box-shadow: 0 0 0 3px var(--c4), 0 6px 20px rgba(77,150,255,.3);
+    transform: scale(1.02);
+  }
 
   .card:nth-child(8n+1)  { background: #FFF3F3; border-color: var(--c1); }
   .card:nth-child(8n+2)  { background: #FFFBEA; border-color: var(--c2); }
@@ -175,14 +209,6 @@
     font-size: 14px;
     color: #555;
     margin-top: 4px;
-  }
-
-  .answer-box {
-    display: inline-block;
-    width: 100%;
-    height: 32px;
-    border-bottom: 3px solid #ccc;
-    border-radius: 4px;
   }
 
   .footer {
@@ -293,6 +319,17 @@
     color: white;
   }
 
+  .speak-hint {
+    font-size: 12px;
+    color: var(--c4);
+    margin-top: 8px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+
   @media print {
     body { background: white; padding: 0; }
     body::before { display: none; }
@@ -307,6 +344,7 @@
     .card  { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .info-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .num-badge { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .config-btn, .modal { display: none; }
     @page { size: A4; margin: 10mm 12mm; }
   }
 </style>
@@ -317,7 +355,11 @@
   <div class="header">
     <div class="stars-row">🌟📚🎈🍎✨🧠📝🎉</div>
     <div class="title">拼音启蒙：a o e i u</div>
-    <div class="subtitle" id="subtitle">从 a o e i u 开始学习，每张卡片都有图像和文字</div>
+    <div class="subtitle-row">
+      <div class="subtitle" id="subtitle">从 a o e i u 开始学习，每张卡片都有图像和文字</div>
+      <button class="config-btn" id="openConfig" aria-label="配置">⚙️</button>
+    </div>
+    <div class="speak-hint">👆 点击卡片听发音</div>
   </div>
 
   <div class="info-row">
@@ -338,32 +380,93 @@
   <div class="footer-msg">认真练习，声音会更响亮！🎤✨</div>
 </div>
 
+<div id="configModal" class="modal" aria-hidden="true">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div>练习配置</div>
+      <button class="close-btn" id="closeConfig">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>选择学习内容</label>
+        <select id="modeSelect">
+          <option value="basic">基础韵母：a o e i u ü</option>
+          <option value="shengmu">声母：b p m f d t n l</option>
+          <option value="yunmu">复韵母：ai ei ui ao ou iu</option>
+          <option value="advanced">整体认读音节：zhi chi shi ri</option>
+          <option value="full">全部内容</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="countSelect">卡片数量</label>
+        <select id="countSelect">
+          <option value="5">5 张</option>
+          <option value="10">10 张</option>
+          <option value="16">16 张</option>
+          <option value="20">20 张</option>
+          <option value="24">24 张</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button id="cancelConfig">取消</button>
+      <button id="applyConfig">应用</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const pinyinData = {
   basic: [
     { sound: 'a', image: '🍎', label: 'a（啊）', example: '阿姨' },
-    { sound: 'o', image: '🍊', label: 'o（哦）', example: '欧阳' },
-    { sound: 'e', image: '🐘', label: 'e（饿）', example: '饿了' },
+    { sound: 'o', image: '🍊', label: 'o（喔）', example: '欧阳' },
+    { sound: 'e', image: '🐘', label: 'e（鹅）', example: '饿了' },
     { sound: 'i', image: '🍦', label: 'i（衣）', example: '衣服' },
-    { sound: 'u', image: '🐢', label: 'u（乌）', example: '乌鸦' }
+    { sound: 'u', image: '🐢', label: 'u（乌）', example: '乌鸦' },
+    { sound: 'ü', image: '🐟', label: 'ü（鱼）', example: '鲤鱼' }
   ],
-  normal: [
-    { sound: 'b', label: 'b', example: '爸爸' },
-    { sound: 'p', label: 'p', example: '皮球' },
-    { sound: 'm', label: 'm', example: '妈妈' },
-    { sound: 'f', label: 'f', example: '发光' },
-    { sound: 'd', label: 'd', example: '点心' },
-    { sound: 't', label: 't', example: '兔子' },
-    { sound: 'n', label: 'n', example: '奶奶' },
-    { sound: 'l', label: 'l', example: '蓝蓝' },
-    { sound: 'g', label: 'g', example: '哥哥' },
-    { sound: 'k', label: 'k', example: '口袋' },
-    { sound: 'h', label: 'h', example: '好好' },
-    { sound: 'a', label: 'a', example: '阿姨' },
-    { sound: 'o', label: 'o', example: '欧阳' },
-    { sound: 'e', label: 'e', example: '饿了' },
-    { sound: 'i', label: 'i', example: '衣服' },
-    { sound: 'u', label: 'u', example: '乌鸦' }
+  shengmu: [
+    { sound: 'b', label: 'b（波）', example: '爸爸' },
+    { sound: 'p', label: 'p（坡）', example: '皮球' },
+    { sound: 'm', label: 'm（摸）', example: '妈妈' },
+    { sound: 'f', label: 'f（佛）', example: '发光' },
+    { sound: 'd', label: 'd（得）', example: '点心' },
+    { sound: 't', label: 't（特）', example: '兔子' },
+    { sound: 'n', label: 'n（呢）', example: '奶奶' },
+    { sound: 'l', label: 'l（了）', example: '蓝蓝' },
+    { sound: 'g', label: 'g（哥）', example: '哥哥' },
+    { sound: 'k', label: 'k（科）', example: '口袋' },
+    { sound: 'h', label: 'h（喝）', example: '好好' },
+    { sound: 'j', label: 'j（鸡）', example: '姐姐' },
+    { sound: 'q', label: 'q（七）', example: '气球' },
+    { sound: 'x', label: 'x（西）', example: '西瓜' },
+    { sound: 'zh', label: 'zh（知）', example: '知识' },
+    { sound: 'ch', label: 'ch（吃）', example: '吃饭' },
+    { sound: 'sh', label: 'sh（诗）', example: '诗歌' },
+    { sound: 'r', label: 'r（日）', example: '日子' },
+    { sound: 'z', label: 'z（资）', example: '字母' },
+    { sound: 'c', label: 'c（次）', example: '次第' },
+    { sound: 's', label: 's（思）', example: '四季' }
+  ],
+  yunmu: [
+    { sound: 'ai', label: 'ai（爱）', example: '爱心' },
+    { sound: 'ei', label: 'ei（诶）', example: '诶呀' },
+    { sound: 'ui', label: 'ui（威）', example: '威风' },
+    { sound: 'ao', label: 'ao（奥）', example: '奥运' },
+    { sound: 'ou', label: 'ou（欧）', example: '欧洲' },
+    { sound: 'iu', label: 'iu（优）', example: '优秀' },
+    { sound: 'ie', label: 'ie（耶）', example: '爷爷' },
+    { sound: 'üe', label: 'üe（约）', example: '月亮' },
+    { sound: 'er', label: 'er（儿）', example: '儿子' },
+    { sound: 'an', label: 'an（安）', example: '安全' },
+    { sound: 'en', label: 'en（恩）', example: '恩情' },
+    { sound: 'in', label: 'in（因）', example: '因为' },
+    { sound: 'un', label: 'un（温）', example: '温暖' },
+    { sound: 'ün', label: 'ün（晕）', example: '晕车' },
+    { sound: 'ang', label: 'ang（昂）', example: '昂首' },
+    { sound: 'eng', label: 'eng（亨）', example: '哼歌' },
+    { sound: 'ing', label: 'ing（英）', example: '英雄' },
+    { sound: 'ong', label: 'ong（轰）', example: '轰炸' }
   ],
   advanced: [
     { sound: 'zhi', label: 'zhi', example: '知识' },
@@ -373,14 +476,20 @@ const pinyinData = {
     { sound: 'zi', label: 'zi', example: '字母' },
     { sound: 'ci', label: 'ci', example: '次第' },
     { sound: 'si', label: 'si', example: '四季' },
-    { sound: 'ya', label: 'ya', example: '鸭子' },
-    { sound: 'yo', label: 'yo', example: '优游' },
-    { sound: 'ye', label: 'ye', example: '爷爷' }
+    { sound: 'yi', label: 'yi', example: '衣服' },
+    { sound: 'wu', label: 'wu', example: '乌鸦' },
+    { sound: 'yu', label: 'yu', example: '鱼儿' },
+    { sound: 'ye', label: 'ye', example: '爷爷' },
+    { sound: 'yue', label: 'yue', example: '月亮' },
+    { sound: 'yuan', label: 'yuan', example: '花园' },
+    { sound: 'yin', label: 'yin', example: '音乐' },
+    { sound: 'yun', label: 'yun', example: '云朵' },
+    { sound: 'ying', label: 'ying', example: '英雄' }
   ],
   full: []
 };
 
-pinyinData.full = pinyinData.normal.concat(pinyinData.advanced);
+pinyinData.full = pinyinData.basic.concat(pinyinData.shengmu, pinyinData.yunmu, pinyinData.advanced);
 
 const config = {
   mode: 'basic',
@@ -389,9 +498,27 @@ const config = {
 
 const grid = document.getElementById('grid');
 const subtitle = document.getElementById('subtitle');
+const modal = document.getElementById('configModal');
+const openConfig = document.getElementById('openConfig');
+const closeConfig = document.getElementById('closeConfig');
+const cancelConfig = document.getElementById('cancelConfig');
+const applyConfig = document.getElementById('applyConfig');
+const modeSelect = document.getElementById('modeSelect');
+const countSelect = document.getElementById('countSelect');
 
 function shuffle(array) {
   return array.slice().sort(() => Math.random() - 0.5);
+}
+
+function speak(text) {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'zh-CN';
+    utterance.rate = 0.8;
+    utterance.pitch = 1;
+    window.speechSynthesis.speak(utterance);
+  }
 }
 
 function createGrid() {
@@ -402,6 +529,7 @@ function createGrid() {
   items.forEach((item, index) => {
     const card = document.createElement('div');
     card.className = 'card';
+    card.dataset.sound = item.sound;
     card.innerHTML = `
       <div class="num-badge">${index + 1}</div>
       <div class="image-icon">${item.image || '🔤'}</div>
@@ -409,10 +537,61 @@ function createGrid() {
       <div class="hint">${item.label}</div>
       <div class="example">例：${item.example}</div>
     `;
+    
+    card.addEventListener('click', () => {
+      card.classList.add('active');
+      speak(item.sound);
+      setTimeout(() => card.classList.remove('active'), 500);
+    });
+    
     grid.appendChild(card);
   });
 }
 
+function updateSubtitle() {
+  const modeName = {
+    basic: '基础韵母',
+    shengmu: '声母',
+    yunmu: '复韵母',
+    advanced: '整体认读音节',
+    full: '全部拼音'
+  }[config.mode];
+  subtitle.textContent = `拼音识读 · ${modeName} · 共${config.count} 张卡片`;
+}
+
+function syncConfigUI() {
+  modeSelect.value = config.mode;
+  countSelect.value = String(config.count);
+}
+
+function openModal() {
+  syncConfigUI();
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+}
+
+function closeModal() {
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+}
+
+function applySettings() {
+  config.mode = modeSelect.value;
+  config.count = Number(countSelect.value);
+  updateSubtitle();
+  createGrid();
+  closeModal();
+}
+
+openConfig.addEventListener('click', openModal);
+closeConfig.addEventListener('click', closeModal);
+cancelConfig.addEventListener('click', closeModal);
+modal.addEventListener('click', (event) => {
+  if (event.target === modal) closeModal();
+});
+applyConfig.addEventListener('click', applySettings);
+
+updateSubtitle();
 createGrid();
 </script>
 </body>
